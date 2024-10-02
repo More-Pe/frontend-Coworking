@@ -1,6 +1,9 @@
+import CLogin from '../../../components/CLogin/Clogin';
 const Login = () => {
   return (
-    <div>Login</div>
+    <>
+    <CLogin />
+    </>
   )
 }
 
