@@ -12,3 +12,18 @@ export interface AuthContextType {
 	setSessionData: (passport: Passport) => void;
 	logout: () => void;
 }
+
+export interface FormRegister {
+	firstName: string;
+	lastName?: string;
+	startup: string;
+	dni?: string;
+	phone?: string;
+	email: string;
+	password: string;
+}
+
+export interface FormLogin {
+	email: string;
+	password: string;
+}
