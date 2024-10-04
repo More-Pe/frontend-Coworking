@@ -1,6 +1,10 @@
+import CRegister from "../../../components/CRegister/CRegister"
+
 const Register = () => {
   return (
-    <div>Register</div>
+    <>
+    <CRegister />
+    </>
   )
 }
 
