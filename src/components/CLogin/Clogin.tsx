@@ -1,27 +1,28 @@
+import { useForm, Controller } from 'react-hook-form';
+import { loginUser } from '../../services/AuthServices';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useForm, Controller } from 'react-hook-form';
-
-interface IFormInput {
-  firstName: string;
-  lastName?: string;
-  startup: string;
-  dni?: string;
-  phone?: string;
-  email: string;
-  password: string;
-}
+import { FormLogin } from '../../types';
 
 const CLogin = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<FormLogin>();
 
-  const onSubmit = (data: IFormInput) => {
-    console.log(data);
+  const onSubmit = async (data: FormLogin) => {
+    try {
+      const response = await loginUser(data);
+      console.log('User successfully logged in:', response);
+    } catch (error: any) {
+      if (error.response) {
+        console.error('Error logging:', error.response.data.message);
+      } else {
+        console.error('Request error:', error.message);
+      }
+    }
   };
 
   return (
@@ -37,93 +38,8 @@ const CLogin = () => {
       noValidate
       autoComplete="off"
     >
-      {/* First Name */}
-      <Controller
-        name="firstName"
-        control={control}
-        rules={{ required: 'First name is required' }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="First Name"
-            error={!!errors.firstName}
-            helperText={errors.firstName ? errors.firstName.message : ''}
-            required
-          />
-        )}
-      />
+      <h2>Iniciar Sesión</h2>
 
-      {/* Last Name (Optional) */}
-      <Controller
-        name="lastName"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Last Name"
-            error={!!errors.lastName}
-            helperText={errors.lastName ? errors.lastName.message : ''}
-          />
-        )}
-      />
-
-      {/* Startup */}
-      <Controller
-        name="startup"
-        control={control}
-        rules={{ required: 'Startup is required' }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Startup"
-            error={!!errors.startup}
-            helperText={errors.startup ? errors.startup.message : ''}
-            required
-          />
-        )}
-      />
-
-      {/* DNI (Optional) */}
-      <Controller
-        name="dni"
-        control={control}
-        rules={{
-          pattern: {
-            value: /^[XYZ]?\d{5,8}[A-Z]$/,
-            message: 'Invalid DNI format',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="DNI"
-            error={!!errors.dni}
-            helperText={errors.dni ? errors.dni.message : ''}
-          />
-        )}
-      />
-
-      {/* Phone (Optional) */}
-      <Controller
-        name="phone"
-        control={control}
-        rules={{
-          pattern: {
-            value: /^[6-9]\d{8}$/,
-            message: 'Invalid phone number format',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Phone"
-            error={!!errors.phone}
-            helperText={errors.phone ? errors.phone.message : ''}
-          />
-        )}
-      />
-
-      {/* Email */}
       <Controller
         name="email"
         control={control}
@@ -145,7 +61,6 @@ const CLogin = () => {
         )}
       />
 
-      {/* Password */}
       <Controller
         name="password"
         control={control}
@@ -153,11 +68,7 @@ const CLogin = () => {
           required: 'Password is required',
           minLength: {
             value: 8,
-            message: 'Password must be between 8 and 12 characters',
-          },
-          maxLength: {
-            value: 12,
-            message: 'Password must be between 8 and 12 characters',
+            message: 'The password must be 8 at least characters long',
           },
         }}
         render={({ field }) => (
@@ -172,7 +83,6 @@ const CLogin = () => {
         )}
       />
 
-      {/* Submit Button */}
       <Button type="submit" variant="contained" sx={{ mt: 2 }}>
         Login
       </Button>
@@ -181,3 +91,4 @@ const CLogin = () => {
 };
 
 export default CLogin;
+
