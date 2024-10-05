@@ -5,38 +5,30 @@ import Home from "../pages/public/Home/Home";
 import Profile from "../pages/user/Profile/Profile";
 import AdminDashboard from "../pages/admin/AdminDashboard/AdminDashboard";
 import NotFound from "../components/NotFound/NotFound";
+import { useAuth } from "../contexts/AuthContext";
 
 const AppRoutes = () => {
-  return (
-    <>
-<Routes>
-				<Route
-					path='*'
-					element={<NotFound />}
-				/>
-				<Route
-					path='/'
-					element={<Home />}
-				/>
-				<Route
-					path='/login'
-					element={<Login />}
-				/>
-				<Route
-					path='/register'
-					element={<Register />}
-				/>
-				<Route
-					path='/profile'
-					element={<Profile />}
-				/>
-				<Route
-					path='/admin'
-					element={<AdminDashboard />}
-				/>
+  const { isLoggedIn, isAdmin } = useAuth();
 
-			</Routes>
-    </>
+  return (
+    <Routes>
+      <Route path='/home' element={<Home />} />
+      
+      {isLoggedIn ? (
+        <Route path='/profile' element={<Profile />} />
+      ) : (
+        <>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+        </>
+      )}
+
+      {isAdmin && (
+        <Route path='/admin' element={<AdminDashboard />} />
+      )}
+
+      <Route path='*' element={<NotFound />} />
+    </Routes>
   );
 };
 

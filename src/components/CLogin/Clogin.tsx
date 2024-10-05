@@ -6,6 +6,10 @@ import Button from '@mui/material/Button';
 import { FormLogin } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { auth, googleProvider } from '../../../firebaseconfig';
+import { signInWithPopup } from 'firebase/auth';
+import { Link } from 'react-router-dom';
+import GoogleIcon from '@mui/icons-material/Google';
 
 const CLogin = () => {
   const navigate = useNavigate();
@@ -34,6 +38,17 @@ const CLogin = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log('Google user:', user);
+      navigate('/profile');
+    } catch (error) {
+      console.error('Error logging in with Google:', error);
+    }
+  };
+
   return (
     <Box
       component="form"
@@ -50,67 +65,70 @@ const CLogin = () => {
       <h2>Login</h2>
 
       <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        rules={{
-          required: 'Email is required',
-          pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Invalid email format',
-          },
-          minLength: {
-            value: 8,
-            message: 'Email must be at least 8 characters long',
-          },
-          maxLength: {
-            value: 12,
-            message: 'Email must be at most 12 characters long',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Email"
-            value={field.value || ''}
-            error={!!errors.email}
-            helperText={errors.email ? errors.email.message : ''}
-            required
-          />
-        )}
-      />
+  name="email"
+  control={control}
+  defaultValue=""
+  rules={{
+    required: 'Email is required',
+    pattern: {
+      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: 'Invalid email format',
+    },
+  }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Email"
+      value={field.value || ''}
+      error={!!errors.email}
+      helperText={errors.email ? errors.email.message : ''}
+      required
+      autoComplete="email" 
+    />
+  )}
+/>
 
-      <Controller
-        name="password"
-        control={control}
-        defaultValue=""
-        rules={{
-          required: 'Password is required',
-          minLength: {
-            value: 8,
-            message: 'The password must be at least 8 characters long',
-          },
-          maxLength: {
-            value: 12,
-            message: 'The password must be at most 12 characters long',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Password"
-            type="password"
-            value={field.value || ''} 
-            error={!!errors.password}
-            helperText={errors.password ? errors.password.message : ''}
-            required
-          />
-        )}
-      />
+<Controller
+  name="password"
+  control={control}
+  defaultValue=""
+  rules={{
+    required: 'Password is required',
+    minLength: {
+      value: 8,
+      message: 'The password must be at least 8 characters long',
+    },
+    maxLength: {
+      value: 12,
+      message: 'The password must be at most 12 characters long',
+    },
+  }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Password"
+      type="password"
+      value={field.value || ''}
+      error={!!errors.password}
+      helperText={errors.password ? errors.password.message : ''}
+      required
+      autoComplete="current-password"
+    />
+  )}
+/>
 
       <Button type="submit" variant="contained" sx={{ mt: 2 }}>
         Login
       </Button>
+      <p>or</p>
+      {/* Login with Google */}
+      <Button variant="outlined" sx={{ mt: 2 }} onClick={handleGoogleLogin} startIcon={<GoogleIcon/>}>
+        Login with Google
+      </Button>
+      
+      <p>
+        ¿You haven't an account? <Link to="/register">Do it here!</Link>
+      </p>
     </Box>
   );
 };

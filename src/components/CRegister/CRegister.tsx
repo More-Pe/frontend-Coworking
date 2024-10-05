@@ -46,132 +46,83 @@ const CRegister = () => {
       <h2>Register</h2>
 
       <Controller
-        name="firstName"
-        control={control}
-        rules={{ required: 'Name is required' }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Name"
-            error={!!errors.firstName}
-            helperText={errors.firstName ? errors.firstName.message : ''}
-            required
-          />
-        )}
-      />
+  name="firstName"
+  control={control}
+  rules={{ required: 'Name is required' }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Name"
+      error={!!errors.firstName}
+      helperText={errors.firstName ? errors.firstName.message : ''}
+      required
+      autoComplete="given-name"
+    />
+  )}
+/>
 
-      <Controller
-        name="lastName"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Last Name"
-            error={!!errors.lastName}
-            helperText={errors.lastName ? errors.lastName.message : ''}
-          />
-        )}
-      />
+<Controller
+  name="lastName"
+  control={control}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Last Name"
+      error={!!errors.lastName}
+      helperText={errors.lastName ? errors.lastName.message : ''}
+      autoComplete="family-name"
+    />
+  )}
+/>
 
-      <Controller
-        name="startup"
-        control={control}
-        rules={{ required: 'El startup es obligatorio' }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Startup"
-            error={!!errors.startup}
-            helperText={errors.startup ? errors.startup.message : ''}
-            required
-          />
-        )}
-      />
+<Controller
+  name="email"
+  control={control}
+  rules={{
+    required: 'Email is required',
+    pattern: {
+      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: 'Invalid email format',
+    },
+  }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Email"
+      error={!!errors.email}
+      helperText={errors.email ? errors.email.message : ''}
+      required
+      autoComplete="email"
+    />
+  )}
+/>
 
-      <Controller
-        name="dni"
-        control={control}
-        rules={{
-          pattern: {
-            value: /^[XYZ]?\d{5,8}[A-Z]$/,
-            message: 'Formato de DNI inválido',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="DNI"
-            error={!!errors.dni}
-            helperText={errors.dni ? errors.dni.message : ''}
-          />
-        )}
-      />
-
-      <Controller
-        name="phone"
-        control={control}
-        rules={{
-          pattern: {
-            value: /^[6-9]\d{8}$/,
-            message: 'Invalid phone format',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Phone"
-            error={!!errors.phone}
-            helperText={errors.phone ? errors.phone.message : ''}
-          />
-        )}
-      />
-
-      <Controller
-        name="email"
-        control={control}
-        rules={{
-          required: 'Email is required',
-          pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Invalid email format',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Email"
-            error={!!errors.email}
-            helperText={errors.email ? errors.email.message : ''}
-            required
-          />
-        )}
-      />
-
-      <Controller
-        name="password"
-        control={control}
-        rules={{
-          required: 'Password is required',
-          minLength: {
-            value: 8,
-            message: 'The password must be between 8 and 12 characters long',
-          },
-          maxLength: {
-            value: 12,
-            message: 'The password must be between 8 and 12 characters long',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Password"
-            type="password"
-            error={!!errors.password}
-            helperText={errors.password ? errors.password.message : ''}
-            required
-          />
-        )}
-      />
+<Controller
+  name="password"
+  control={control}
+  rules={{
+    required: 'Password is required',
+    minLength: {
+      value: 8,
+      message: 'The password must be between 8 and 12 characters long',
+    },
+    maxLength: {
+      value: 12,
+      message: 'The password must be between 8 and 12 characters long',
+    },
+  }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Password"
+      type="password"
+      error={!!errors.password}
+      helperText={errors.password ? errors.password.message : ''}
+      required
+      autoComplete="new-password"
+    />
+  )}
+/>
 
       <Button type="submit" variant="contained" sx={{ mt: 2 }}>
         Sign Up

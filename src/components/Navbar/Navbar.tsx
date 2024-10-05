@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,12 +13,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import { useAuth } from '../../contexts/AuthContext';
-
-const pages = ['Home'];
-const settings = ['Profile', 'Logout'];
+import { CSurfer } from '../CSurfer/CSurfer';
 
 function NavBar() {
   const { isLoggedIn, isAdmin, logout } = useAuth();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -40,7 +39,8 @@ function NavBar() {
 
   const handleLogout = () => {
     logout();
-    handleCloseUserMenu(); 
+    handleCloseUserMenu();
+    navigate('/home');
   };
 
   return (
@@ -76,61 +76,54 @@ function NavBar() {
             <MenuIcon />
           </IconButton>
           <Menu
-            id="menu-appbar"
-            anchorEl={anchorElNav}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            open={Boolean(anchorElNav)}
-            onClose={handleCloseNavMenu}
-            sx={{ display: { xs: 'block', md: 'none' } }}
-          >
-            {pages.map((page) => (
-              <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Typography sx={{ textAlign: 'center' }}>
-                  <NavLink to={`/${page.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {page}
-                  </NavLink>
-                </Typography>
-              </MenuItem>
-            ))}
-
-            {!isLoggedIn && (
-              <>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    <NavLink to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
-                      Register
-                    </NavLink>
-                  </Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    <NavLink to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
-                      Login
-                    </NavLink>
-                  </Typography>
-                </MenuItem>
-              </>
-            )}
-
-            {isAdmin && (
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography sx={{ textAlign: 'center' }}>
-                  <NavLink to="/admin-dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    Admin Dashboard
-                  </NavLink>
-                </Typography>
-              </MenuItem>
-            )}
-          </Menu>
+  id="menu-appbar"
+  anchorEl={anchorElNav}
+  anchorOrigin={{
+    vertical: 'bottom',
+    horizontal: 'left',
+  }}
+  keepMounted
+  transformOrigin={{
+    vertical: 'top',
+    horizontal: 'left',
+  }}
+  open={Boolean(anchorElNav)}
+  onClose={handleCloseNavMenu}
+  sx={{ display: { xs: 'block', md: 'none' } }}
+>
+  {[
+    <MenuItem key="home" onClick={handleCloseNavMenu}>
+      <CSurfer content={<Typography sx={{ textAlign: 'center' }}>Home</Typography>} path="/home" />
+    </MenuItem>,
+    !isLoggedIn && (
+      [
+        <MenuItem key="login" onClick={handleCloseNavMenu}>
+          <CSurfer content={<Typography sx={{ textAlign: 'center' }}>Login</Typography>} path="/login" />
+        </MenuItem>,
+        <MenuItem key="register" onClick={handleCloseNavMenu}>
+          <CSurfer content={<Typography sx={{ textAlign: 'center' }}>Register</Typography>} path="/register" />
+        </MenuItem>,
+      ]
+    ),
+    isLoggedIn && (
+      [
+        <MenuItem key="profile" onClick={handleCloseNavMenu}>
+          <CSurfer content={<Typography sx={{ textAlign: 'center' }}>Profile</Typography>} path="/profile" />
+        </MenuItem>,
+        <MenuItem key="logout" onClick={handleLogout}>
+          <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+        </MenuItem>,
+        isAdmin && (
+          <MenuItem key="admin" onClick={handleCloseNavMenu}>
+            <CSurfer content={<Typography sx={{ textAlign: 'center' }}>Admin Dashboard</Typography>} path="/admin" />
+          </MenuItem>
+        ),
+      ]
+    ),
+  ]}
+</Menu>
         </Box>
+
         <HomeWorkIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
         <Typography
           variant="h5"
@@ -151,43 +144,60 @@ function NavBar() {
         </Typography>
 
         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-          {pages.map((page) => (
-            <Button
-              key={page}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-              component={NavLink}
-              to={`/${page.toLowerCase()}`}
-            >
-              {page}
-            </Button>
-          ))}
-
+          <CSurfer
+            content={
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                Home
+              </Button>
+            }
+            path="/home"
+          />
           {!isLoggedIn && (
             <>
-              <Button
-                sx={{ my: 2, color: 'white', display: 'block' }}
-                component={NavLink}
-                to="/register"
-              >
-                Register
-              </Button>
-              <Button
-                sx={{ my: 2, color: 'white', display: 'block' }}
-                component={NavLink}
-                to="/login"
-              >
-                Login
-              </Button>
+              <CSurfer
+                content={
+                  <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                    Login
+                  </Button>
+                }
+                path="/login"
+              />
+              <CSurfer
+                content={
+                  <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                    Register
+                  </Button>
+                }
+                path="/register"
+              />
             </>
           )}
-          
+          {isLoggedIn && (
+            <CSurfer
+              content={
+                <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                  Profile
+                </Button>
+              }
+              path="/profile"
+            />
+          )}
           {isAdmin && (
+            <CSurfer
+              content={
+                <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                  Admin Dashboard
+                </Button>
+              }
+              path="/admin"
+            />
+          )}
+          {isLoggedIn && (
             <Button
               sx={{ my: 2, color: 'white', display: 'block' }}
-              component={NavLink}
-              to="/admin-dashboard"
+              onClick={handleLogout}
             >
-              Admin Dashboard
+              Logout
             </Button>
           )}
         </Box>
@@ -216,21 +226,15 @@ function NavBar() {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography sx={{ textAlign: 'center' }}>
-                  {setting === 'Logout' ? (
-                    <span onClick={handleLogout} style={{ cursor: 'pointer' }}>
-                      {setting}
-                    </span>
-                  ) : (
-                    <Link to={`/${setting.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                      {setting}
-                    </Link>
-                  )}
-                </Typography>
-              </MenuItem>
-            ))}
+            <MenuItem onClick={handleCloseUserMenu}>
+              <CSurfer
+                content={<Typography sx={{ textAlign: 'center' }}>Profile</Typography>}
+                path="/profile"
+              />
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+            </MenuItem>
           </Menu>
         </Box>
       </Toolbar>
