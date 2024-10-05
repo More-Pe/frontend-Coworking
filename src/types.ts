@@ -27,3 +27,9 @@ export interface FormLogin {
 	email: string;
 	password: string;
 }
+
+export interface CSurferProps {
+	content: React.ReactNode;
+	path: string;
+	className?: string;
+  }
