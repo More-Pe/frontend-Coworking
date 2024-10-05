@@ -7,6 +7,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const useAuthorization = (): AuthContextType => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isUser, setIsUser] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
@@ -16,33 +17,35 @@ export const useAuthorization = (): AuthContextType => {
       const passport: Passport = JSON.parse(storedPassport);
       setToken(passport.token);
       setIsLoggedIn(true);
-      setIsAdmin(passport.tokenData.role === 'super_admin');
+      setIsUser(passport.tokenData.role === 'user');
+      setIsAdmin(passport.tokenData.role === 'admin');
     }
   }, []);
 
   const setSessionData = (passport: Passport) => {
     setToken(passport.token);
     setIsLoggedIn(true);
-    setIsAdmin(passport.tokenData.role === 'super_admin');
+    setIsUser(passport.tokenData.role === 'user');
+    setIsAdmin(passport.tokenData.role === 'admin');
     localStorage.setItem('passport', JSON.stringify(passport));
   };
 
   const logout = () => {
     setToken(null);
     setIsLoggedIn(false);
+    setIsUser(false);
     setIsAdmin(false);
     localStorage.removeItem('passport');
     navigate('/login');
   };
 
-  return { token, isLoggedIn, isAdmin, setSessionData, logout };
+  return { token, isLoggedIn, isUser, isAdmin, setSessionData, logout };
 };
 
-// Hook para usar el contexto de autenticación
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+    throw new Error('useAuth must be use inside of AuthProvider');
   }
   return context;
 };

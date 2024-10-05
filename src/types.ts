@@ -8,6 +8,7 @@ export interface Passport {
 export interface AuthContextType {
 	token: string | null;
 	isLoggedIn: boolean;
+	isUser: boolean;
 	isAdmin: boolean;
 	setSessionData: (passport: Passport) => void;
 	logout: () => void;
