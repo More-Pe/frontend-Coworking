@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, NavLink } from 'react-router-dom'; // Asegúrate de importar esto
+import { Link, NavLink } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,17 +12,20 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import { useAuth } from '../../contexts/AuthContext';
 
-const pages = ['Register', 'Login', 'Home', 'Dashboard'];
-const settings = ['Profile', 'Account', 'Logout'];
+const pages = ['Home'];
+const settings = ['Profile', 'Logout'];
 
 function NavBar() {
+  const { isLoggedIn, isAdmin, logout } = useAuth();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -33,6 +36,11 @@ function NavBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleCloseUserMenu(); 
   };
 
   return (
@@ -92,6 +100,35 @@ function NavBar() {
                 </Typography>
               </MenuItem>
             ))}
+
+            {!isLoggedIn && (
+              <>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                    <NavLink to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      Register
+                    </NavLink>
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                    <NavLink to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      Login
+                    </NavLink>
+                  </Typography>
+                </MenuItem>
+              </>
+            )}
+
+            {isAdmin && (
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography sx={{ textAlign: 'center' }}>
+                  <NavLink to="/admin-dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    Admin Dashboard
+                  </NavLink>
+                </Typography>
+              </MenuItem>
+            )}
           </Menu>
         </Box>
         <HomeWorkIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -119,19 +156,50 @@ function NavBar() {
               key={page}
               sx={{ my: 2, color: 'white', display: 'block' }}
               component={NavLink}
-              to={`/${page.toLowerCase()}`} // Aquí establecemos el enlace para cada página
+              to={`/${page.toLowerCase()}`}
             >
               {page}
             </Button>
           ))}
+
+          {!isLoggedIn && (
+            <>
+              <Button
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                component={NavLink}
+                to="/register"
+              >
+                Register
+              </Button>
+              <Button
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                component={NavLink}
+                to="/login"
+              >
+                Login
+              </Button>
+            </>
+          )}
+          
+          {isAdmin && (
+            <Button
+              sx={{ my: 2, color: 'white', display: 'block' }}
+              component={NavLink}
+              to="/admin-dashboard"
+            >
+              Admin Dashboard
+            </Button>
+          )}
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-            </IconButton>
-          </Tooltip>
+          {isLoggedIn && (
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+          )}
           <Menu
             sx={{ mt: '45px' }}
             id="menu-appbar"
@@ -151,9 +219,15 @@ function NavBar() {
             {settings.map((setting) => (
               <MenuItem key={setting} onClick={handleCloseUserMenu}>
                 <Typography sx={{ textAlign: 'center' }}>
-                  <Link to={`/${setting.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {setting}
-                  </Link>
+                  {setting === 'Logout' ? (
+                    <span onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                      {setting}
+                    </span>
+                  ) : (
+                    <Link to={`/${setting.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {setting}
+                    </Link>
+                  )}
                 </Typography>
               </MenuItem>
             ))}
