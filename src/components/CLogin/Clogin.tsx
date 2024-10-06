@@ -6,10 +6,7 @@ import Button from '@mui/material/Button';
 import { FormLogin } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { auth, googleProvider } from '../../../firebaseconfig';
-import { signInWithPopup } from 'firebase/auth';
 import { Link } from 'react-router-dom';
-import GoogleIcon from '@mui/icons-material/Google';
 
 const CLogin = () => {
   const navigate = useNavigate();
@@ -35,17 +32,6 @@ const CLogin = () => {
       }
     } catch (error: any) {
       console.error('Error logging in:', error);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      console.log('Google user:', user);
-      navigate('/profile');
-    } catch (error) {
-      console.error('Error logging in with Google:', error);
     }
   };
 
@@ -120,12 +106,6 @@ const CLogin = () => {
       <Button type="submit" variant="contained" sx={{ mt: 2 }}>
         Login
       </Button>
-      <p>or</p>
-      {/* Login with Google */}
-      <Button variant="outlined" sx={{ mt: 2 }} onClick={handleGoogleLogin} startIcon={<GoogleIcon/>}>
-        Login with Google
-      </Button>
-      
       <p>
         ¿You haven't an account? <Link to="/register">Do it here!</Link>
       </p>

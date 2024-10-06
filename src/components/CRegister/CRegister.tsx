@@ -4,9 +4,12 @@ import Button from '@mui/material/Button';
 import { useForm, Controller } from 'react-hook-form';
 import { registerUser } from '../../services/AuthServices';
 import { FormRegister } from '../../types';
+import COptionList from '../COptionList/COptionList';
 
 
 const CRegister = () => {
+
+  
   const {
     handleSubmit,
     control,
@@ -64,17 +67,19 @@ const CRegister = () => {
 <Controller
   name="lastName"
   control={control}
+  rules={{ required: 'Last name is required' }}
   render={({ field }) => (
     <TextField
       {...field}
       label="Last Name"
       error={!!errors.lastName}
       helperText={errors.lastName ? errors.lastName.message : ''}
-      autoComplete="family-name"
+      required
+      autoComplete="given-name"
     />
   )}
 />
-
+<COptionList />
 <Controller
   name="email"
   control={control}
