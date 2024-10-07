@@ -102,13 +102,12 @@ const CLogin = () => {
     />
   )}
 />
-
+      <p>
+        Don't have an account yet? <Link to="/register">Sign up here!</Link>
+      </p>
       <Button type="submit" variant="contained" sx={{ mt: 2 }}>
         Login
       </Button>
-      <p>
-        ¿You haven't an account? <Link to="/register">Do it here!</Link>
-      </p>
     </Box>
   );
 };
