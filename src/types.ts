@@ -1,9 +1,11 @@
-export interface Passport {
+export interface CustomJwtPayload {
+	role: string;
+  }
+
+ export interface Passport {
 	token: string;
-	tokenData: {
-		role: string;
-	};
-}
+	tokenData: CustomJwtPayload;
+  }
 
 export interface AuthContextType {
 	token: string | null;
@@ -12,6 +14,7 @@ export interface AuthContextType {
 	isAdmin: boolean;
 	setSessionData: (passport: Passport) => void;
 	logout: () => void;
+	passport: Passport | null;
 }
 
 export interface FormRegister {

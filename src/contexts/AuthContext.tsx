@@ -7,8 +7,9 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const useAuthorization = (): AuthContextType => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isUser, setIsUser] = useState(false);
+  const [isUser , setIsUser ] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [passport, setPassport] = useState<Passport | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,8 +26,9 @@ export const useAuthorization = (): AuthContextType => {
   const setSessionData = (passport: Passport) => {
     setToken(passport.token);
     setIsLoggedIn(true);
-    setIsUser(passport.tokenData.role === 'user');
+    setIsUser (passport.tokenData.role === 'user');
     setIsAdmin(passport.tokenData.role === 'admin');
+    setPassport(passport); 
     localStorage.setItem('passport', JSON.stringify(passport));
   };
 
@@ -39,7 +41,7 @@ export const useAuthorization = (): AuthContextType => {
     navigate('/login');
   };
 
-  return { token, isLoggedIn, isUser, isAdmin, setSessionData, logout };
+  return { passport, token, isLoggedIn, isUser, isAdmin, setSessionData, logout };
 };
 
 export const useAuth = (): AuthContextType => {

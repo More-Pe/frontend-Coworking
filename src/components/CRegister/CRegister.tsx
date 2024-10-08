@@ -10,10 +10,11 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { useForm, Controller } from 'react-hook-form';
 import { registerUser } from '../../services/AuthServices';
 import { FormRegister } from '../../types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 
 const CRegister = () => {
   const [error, setError] = useState('');
+  const navigate = useNavigate();
   
   const {
     handleSubmit,
@@ -44,14 +45,13 @@ const CRegister = () => {
         phone: data.phone,
       });
       console.log('User successfully registered', result);
-      // Handle successful registration (e.g., redirect to login page or show success message)
+      navigate('/login');
     } catch (error) {
       console.error('Error registering user:', (error as Error).message);
       setError((error as Error).message);
     }
   };
 
-  // Lista de startups (esto debería venir de una API o un archivo de configuración)
   const startups = [
     'Startup A',
     'Startup B',
