@@ -1,8 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { loginUser } from '../../services/AuthServices';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { Typography, Button, TextField } from '@mui/material';
 import { FormLogin } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
@@ -54,7 +53,11 @@ const CLogin = () => {
       noValidate
       autoComplete="off"
     >
-      <h2>Login</h2>
+      				<Typography
+					variant='h2'
+					gutterBottom>
+					Login
+				</Typography>
 
       <Controller
         name="email"

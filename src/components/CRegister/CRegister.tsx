@@ -1,12 +1,5 @@
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import FormHelperText from '@mui/material/FormHelperText';
+import { Typography, Button, TextField, MenuItem, InputLabel, FormControl, Select, FormHelperText, Box } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { registerUser } from '../../services/AuthServices';
 import { FormRegister } from '../../types';
@@ -74,7 +67,11 @@ const CRegister = () => {
       noValidate
       autoComplete="off"
     >
-      <h2>Register</h2>
+				<Typography
+					variant='h2'
+					gutterBottom>
+					Register
+				</Typography>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
