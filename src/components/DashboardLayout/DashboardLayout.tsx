@@ -4,8 +4,9 @@ import { Container, Box, Button, ButtonGroup } from '@mui/material';
 const DashboardLayout = () => {
   const buttons = [
     <Button key='one'>Persons</Button>,
-    <Button key='three'>Rooms</Button>,
-    <Button key='two'>Reports</Button>,
+    <Button key='two'>Rooms</Button>,
+    <Button key='tree'>Startups</Button>,
+    <Button key='four'>Reports</Button>,
   ];
 
   return (
