@@ -65,7 +65,7 @@ function NavBar() {
 						fontFamily: 'monospace',
 						fontWeight: 700,
 						letterSpacing: '.3rem',
-						color: '#011cb1',
+						color: 'primary.main',
 						textDecoration: 'none',
 					}}>
 					LAS NAVES
@@ -230,7 +230,7 @@ function NavBar() {
 												bottom: -2,
                         borderRadius: '2em',
                         height: '4px',
-												backgroundColor: '#011cb1',
+												backgroundColor: 'primary.main',
 											},
 										}}>
 										Login
@@ -254,7 +254,7 @@ function NavBar() {
 												bottom: -2,
                         borderRadius: '2em',
                         height: '4px',												
-                        backgroundColor: '#011cb1',
+                        backgroundColor: 'primary.main',
 											},
 										}}>
 										Register
@@ -281,7 +281,7 @@ function NavBar() {
 											bottom: -2,
                       borderRadius: '2em',
                       height: '4px',											
-                      backgroundColor: '#011cb1',
+                      backgroundColor: 'primary.main',
 										},
 									}}>
 									Profile
@@ -307,7 +307,7 @@ function NavBar() {
 											bottom: -2,
                       borderRadius: '2em',
                       height: '4px',											
-                      backgroundColor: '#011cb1',
+                      backgroundColor: 'primary.main',
 										},
 									}}>
 									Admin Dashboard
@@ -331,7 +331,7 @@ function NavBar() {
 									bottom: -2,
                   borderRadius: '2em',
                   height: '4px',									
-                  backgroundColor: '#011cb1',
+                  backgroundColor: 'primary.main',
 								},
 							}}
 							onClick={handleLogout}>
@@ -339,12 +339,23 @@ function NavBar() {
 						</Button>
 					)}
 				</Box>
-				<Box sx={{ flexGrow: 0 }}>
+        <Box sx={{ flexGrow: 0, display: 'flex', justifyContent: 'flex-end', pr: { xs: 1, sm: 4 } }}>
 					{isLoggedIn && (
 						<Tooltip title='Open settings'>
-							<IconButton onClick={handleOpenUserMenu} size="large" sx={{ p: 0 }}>
-								<ManageAccounts />
-							</IconButton>
+      <IconButton
+        onClick={handleOpenUserMenu}
+        size="large"
+        sx={{
+          p: 0,
+          ml: { xs: -2, sm: -4 },
+        }}
+      >
+        <ManageAccounts
+          sx={{
+            fontSize: '2rem',
+            color: 'primary.main',
+          }}
+        /></IconButton>
 						</Tooltip>
 					)}
 					<Menu

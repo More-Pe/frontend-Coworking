@@ -1,7 +1,10 @@
+import CProfile from "../../../components/CProfile/CProfile"
+
 const Profile = () => {
   return (
-    <div>Profile</div>
+    <>
+    <CProfile />
+    </>
   )
 }
-
 export default Profile
