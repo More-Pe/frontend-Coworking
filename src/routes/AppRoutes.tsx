@@ -5,6 +5,7 @@ import Home from '../pages/public/Home/Home';
 import Profile from '../pages/user/Profile/Profile';
 import AdminDashboard from '../pages/admin/AdminDashboard/AdminDashboard';
 import NotFound from '../components/NotFound/NotFound';
+import Rooms from '../pages/public/Rooms/Rooms';
 
 const AppRoutes = () => {
 	return (
@@ -16,6 +17,10 @@ const AppRoutes = () => {
 			<Route
 				path='/profile'
 				element={<Profile />}
+			/>
+						<Route
+				path='/rooms'
+				element={<Rooms />}
 			/>
 			<Route
 				path='/login'

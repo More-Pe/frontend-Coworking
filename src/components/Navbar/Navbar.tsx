@@ -96,18 +96,28 @@ function NavBar() {
 						open={Boolean(anchorElNav)}
 						onClose={handleCloseNavMenu}
 						sx={{ display: { xs: 'block', md: 'none' } }}>
-						{[
-							<MenuItem
-								key='home'
-								onClick={handleCloseNavMenu}>
-								<CSurfer
-									content={
-										<Typography sx={{ textAlign: 'center' }}>Home</Typography>
-									}
-									path='/home'
-								/>
-							</MenuItem>,
-							!isLoggedIn && [
+						<MenuItem
+							key='home'
+							onClick={handleCloseNavMenu}>
+							<CSurfer
+								content={
+									<Typography sx={{ textAlign: 'center' }}>Home</Typography>
+								}
+								path='/home'
+							/>
+						</MenuItem>
+						<MenuItem
+							key='rooms'
+							onClick={handleCloseNavMenu}>
+							<CSurfer
+								content={
+									<Typography sx={{ textAlign: 'center' }}>Rooms</Typography>
+								}
+								path='/rooms' // Asegúrate de que esta ruta esté definida
+							/>
+						</MenuItem>
+						{!isLoggedIn && (
+							<>
 								<MenuItem
 									key='login'
 									onClick={handleCloseNavMenu}>
@@ -119,7 +129,7 @@ function NavBar() {
 										}
 										path='/login'
 									/>
-								</MenuItem>,
+								</MenuItem>
 								<MenuItem
 									key='register'
 									onClick={handleCloseNavMenu}>
@@ -131,9 +141,11 @@ function NavBar() {
 										}
 										path='/register'
 									/>
-								</MenuItem>,
-							],
-							isLoggedIn && [
+								</MenuItem>
+							</>
+						)}
+						{isLoggedIn && (
+							<>
 								<MenuItem
 									key='profile'
 									onClick={handleCloseNavMenu}>
@@ -145,13 +157,13 @@ function NavBar() {
 										}
 										path='/profile'
 									/>
-								</MenuItem>,
+								</MenuItem>
 								<MenuItem
 									key='logout'
 									onClick={handleLogout}>
 									<Typography sx={{ textAlign: 'center' }}>Logout</Typography>
-								</MenuItem>,
-								isAdmin && (
+								</MenuItem>
+								{isAdmin && (
 									<MenuItem
 										key='admin'
 										onClick={handleCloseNavMenu}>
@@ -164,9 +176,9 @@ function NavBar() {
 											path='/admin'
 										/>
 									</MenuItem>
-								),
-							],
-						]}
+								)}
+							</>
+						)}
 					</Menu>
 				</Box>
 				<Typography
@@ -200,17 +212,39 @@ function NavBar() {
 										left: 0,
 										right: 0,
 										bottom: -2,
-                    borderRadius: '2em',
+										borderRadius: '2em',
 										height: '4px',
 										backgroundColor: 'primary.main',
 									},
 								}}>
-								{' '}
-								{/* Subrayado al pasar el mouse */}
 								Home
 							</Button>
 						}
 						path='/home'
+					/>
+					<CSurfer
+						content={
+							<Button
+								sx={{
+									my: 2,
+									color: 'black',
+									display: 'block',
+									position: 'relative',
+									'&:hover::after': {
+										content: '""',
+										position: 'absolute',
+										left: 0,
+										right: 0,
+										bottom: -2,
+										borderRadius: '2em',
+										height: '4px',
+										backgroundColor: 'primary.main',
+									},
+								}}>
+								Rooms
+							</Button>
+						}
+						path='/rooms'
 					/>
 					{!isLoggedIn && (
 						<>
@@ -228,8 +262,8 @@ function NavBar() {
 												left: 0,
 												right: 0,
 												bottom: -2,
-                        borderRadius: '2em',
-                        height: '4px',
+												borderRadius: '2em',
+												height: '4px',
 												backgroundColor: 'primary.main',
 											},
 										}}>
@@ -252,9 +286,9 @@ function NavBar() {
 												left: 0,
 												right: 0,
 												bottom: -2,
-                        borderRadius: '2em',
-                        height: '4px',												
-                        backgroundColor: 'primary.main',
+												borderRadius: '2em',
+												height: '4px',
+												backgroundColor: 'primary.main',
 											},
 										}}>
 										Register
@@ -279,9 +313,9 @@ function NavBar() {
 											left: 0,
 											right: 0,
 											bottom: -2,
-                      borderRadius: '2em',
-                      height: '4px',											
-                      backgroundColor: 'primary.main',
+											borderRadius: '2em',
+											height: '4px',
+											backgroundColor: 'primary.main',
 										},
 									}}>
 									Profile
@@ -305,9 +339,9 @@ function NavBar() {
 											left: 0,
 											right: 0,
 											bottom: -2,
-                      borderRadius: '2em',
-                      height: '4px',											
-                      backgroundColor: 'primary.main',
+											borderRadius: '2em',
+											height: '4px',
+											backgroundColor: 'primary.main',
 										},
 									}}>
 									Admin Dashboard
@@ -329,9 +363,9 @@ function NavBar() {
 									left: 0,
 									right: 0,
 									bottom: -2,
-                  borderRadius: '2em',
-                  height: '4px',									
-                  backgroundColor: 'primary.main',
+									borderRadius: '2em',
+									height: '4px',
+									backgroundColor: 'primary.main',
 								},
 							}}
 							onClick={handleLogout}>
@@ -339,23 +373,24 @@ function NavBar() {
 						</Button>
 					)}
 				</Box>
-        <Box sx={{ flexGrow: 0, display: 'flex', justifyContent: 'flex-end', pr: { xs: 1, sm: 4 } }}>
+				<Box sx={{ flexGrow: 0, display: 'flex', justifyContent: 'flex-end', pr: { xs: 1, sm: 4 } }}>
 					{isLoggedIn && (
 						<Tooltip title='Open settings'>
-      <IconButton
-        onClick={handleOpenUserMenu}
-        size="large"
-        sx={{
-          p: 0,
-          ml: { xs: -2, sm: -4 },
-        }}
-      >
-        <ManageAccounts
-          sx={{
-            fontSize: '2rem',
-            color: 'primary.main',
-          }}
-        /></IconButton>
+							<IconButton
+								onClick={handleOpenUserMenu}
+								size="large"
+								sx={{
+									p: 0,
+									ml: { xs: -2, sm: -4 },
+								}}
+							>
+								<ManageAccounts
+									sx={{
+										fontSize: '2rem',
+										color: 'primary.main',
+									}}
+								/>
+							</IconButton>
 						</Tooltip>
 					)}
 					<Menu
