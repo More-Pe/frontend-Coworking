@@ -110,17 +110,18 @@ const CRegister = () => {
         )}
       />
 
-      <Controller
+<Controller
         name="startup"
         control={control}
-        rules={{ required: 'Startup is required' }}
+        defaultValue=""
         render={({ field }) => (
-          <FormControl error={!!errors.startup} required>
+          <FormControl fullWidth error={!!errors.startup}>
             <InputLabel id="startup-label">Startup</InputLabel>
             <Select
               {...field}
               labelId="startup-label"
-              label="Startup"
+              value={field.value || ''}
+              onChange={field.onChange}
             >
               {startups.map((startup) => (
                 <MenuItem key={startup} value={startup}>
@@ -128,7 +129,7 @@ const CRegister = () => {
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText>{errors.startup ? errors.startup.message : ''}</FormHelperText>
+            {errors.startup && <FormHelperText>{errors.startup.message}</FormHelperText>}
           </FormControl>
         )}
       />

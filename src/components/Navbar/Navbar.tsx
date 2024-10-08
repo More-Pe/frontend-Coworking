@@ -180,7 +180,7 @@ function NavBar() {
 						fontFamily: 'monospace',
 						fontWeight: 700,
 						letterSpacing: '.3rem',
-						color: '#011cb1',
+						color: 'primary.main',
 						textDecoration: 'none',
 					}}>
 					LAS NAVES
@@ -202,7 +202,7 @@ function NavBar() {
 										bottom: -2,
                     borderRadius: '2em',
 										height: '4px',
-										backgroundColor: '#011cb1',
+										backgroundColor: 'primary.main',
 									},
 								}}>
 								{' '}

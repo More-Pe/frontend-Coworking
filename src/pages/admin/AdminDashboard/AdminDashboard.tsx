@@ -1,6 +1,10 @@
+import DashboardLayout from "../../../components/DashboardLayout/DashboardLayout"
+
 const AdminDashboard = () => {
   return (
-    <div>AdminDashboard</div>
+    <>
+    <DashboardLayout />
+    </>
   )
 }
 
