@@ -30,7 +30,7 @@ const CLogin = () => {
         };
         
         setSessionData(passport);
-        navigate('/profile');
+        navigate('/rooms');
       } else {
         alert(response.message || 'Login failed');
       }

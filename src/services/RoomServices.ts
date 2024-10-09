@@ -11,13 +11,9 @@ export const getAllRooms = async () => {
     }
 };
 
-export const getRoomById = async (id: number, token: string) => {
+export const getRoomById = async (id: number) => {
     try {
-        const response = await axios.get(`${URL}/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await axios.get(`${URL}/${id}`);
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error retrieving room');

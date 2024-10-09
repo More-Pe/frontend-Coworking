@@ -282,7 +282,7 @@ const CRegister = () => {
 				</Box>
 				<Button
 					type='submit'
-					variant='outlined'
+					variant='contained'
 					sx={{ mt: 2 }}>
 					Sign Up
 				</Button>
