@@ -65,7 +65,6 @@ const StartupTable = () => {
       console.error("Token not available for updating startup");
       return;
     }
-  
     try {
       await updateStartup(startupId, editedStartup, token);
       const updatedStartups = startups.map((startup) =>
@@ -99,7 +98,7 @@ const StartupTable = () => {
                 {editRowId === startup.startup_id ? (
                   <TextField
                     name="name"
-                    value={editedStartup.name ?? startup.name} // Coalescencia nula aquí
+                    value={editedStartup.name ?? startup.name}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -111,7 +110,7 @@ const StartupTable = () => {
                 {editRowId === startup.startup_id ? (
                   <TextField
                     name="description"
-                    value={editedStartup.description ?? startup.description} // Coalescencia nula aquí
+                    value={editedStartup.description ?? startup.description} 
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -123,7 +122,7 @@ const StartupTable = () => {
                 {editRowId === startup.startup_id ? (
                   <TextField
                     name="program"
-                    value={editedStartup.program ?? startup.program} // Coalescencia nula aquí
+                    value={editedStartup.program ?? startup.program} 
                     onChange={handleInputChange}
                     variant="standard"
                   />

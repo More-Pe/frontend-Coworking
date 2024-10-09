@@ -56,8 +56,12 @@ const PersonsTable = () => {
   };
 
   const handleSaveClick = async (userId: number) => {
+    if (!token) {
+      console.error("Token not available for updating person");
+      return;
+    }
     try {
-      await updatePersonByAdmin(userId, editedUser);
+      await updatePersonByAdmin(userId, editedUser, token);
       const updatedUsers = users.map((user) => (user.person_id === userId ? { ...user, ...editedUser } : user));
       setUsers(updatedUsers);
       setEditRowId(null);

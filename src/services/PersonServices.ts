@@ -59,9 +59,13 @@ export const updateOwnProfile = async (updateData: any, token: string) => {
     }
 };
 
-export const updatePersonByAdmin = async (id: number, updateData: any) => {
+export const updatePersonByAdmin = async (id: number, updateData: any, token: string) => {
     try {
-        const response = await axios.put(`${URL}/${id}`, updateData);
+        const response = await axios.put(`${URL}/${id}`, updateData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error updating person');
