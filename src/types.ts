@@ -57,3 +57,10 @@ export interface Startup {
 	description: string;
 	program: string;
 }
+
+export interface Room {
+	room_id: number;
+	room_name: string;
+	capacity: number;
+	room_type: string;
+}
