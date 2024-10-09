@@ -1,5 +1,5 @@
 # 🏢 Coworking Frontend
-<img alt="coworking banner" src="./src/assets/img/home-screen.png">
+<img alt="coworking banner" src="./src/assets/home-screen.png">
 Coworking is a management application for shared workspaces that allows users to book rooms, manage access, and visualize information about space usage.
 
 ## 🌐 Coworking Frontend System
