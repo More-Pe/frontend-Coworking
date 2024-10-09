@@ -118,11 +118,14 @@ const CProfile = () => {
 					flexDirection: 'column',
 					alignItems: 'flex-start',
 					justifyContent: 'center',
+					width: '100%',
+					maxWidth: '600px',
 				}}>
-				<Typography
-					variant='h2'
-					gutterBottom>
-					Profile
+				<Typography variant="h2" gutterBottom>
+					Hello again, {formData.first_name}!
+				</Typography>
+				<Typography variant='body1' sx={{ margin: '16px 0' }}>
+					Log in and dive into your workspace.
 				</Typography>
 				<Box
 					component='form'
@@ -130,81 +133,98 @@ const CProfile = () => {
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
+						width: '100%',
 					}}>
-					<TextField
-						label={formData.first_name}
-						name='first_name'
-						autoComplete='first_name'
-						value={formData.first_name}
-						onChange={handleChange}
-						disabled={!isEditing}
-						sx={{ m: 1, width: '25ch' }}
-					/>
-					<TextField
-						label={formData.last_name}
-						name='last_name'
-						autoComplete='last_name'
-						value={formData.last_name}
-						onChange={handleChange}
-						disabled={!isEditing}
-						sx={{ m: 1, width: '25ch' }}
-					/>
-					<TextField
-						label={formData.email}
-						name='email'
-						autoComplete='email'
-						value={formData.email}
-						onChange={handleChange}
-						disabled={!isEditing}
-						sx={{ m: 1, width: '25ch' }}
-					/>
-					<TextField
-						label={formData.phone || 'Input your phone'}
-						name='phone'
-						autoComplete='phone'
-						value={formData.phone}
-						onChange={handleChange}
-						disabled={!isEditing}
-						sx={{ m: 1, width: '25ch' }}
-					/>
-					<FormControl sx={{ m: 1, width: '25ch' }}>
-						<InputLabel id='startup-label'>
-							{formData.startup || 'Select a startup'}{' '}
-						</InputLabel>
-						<Select
-							labelId='startup-label'
-							label='Startup'
-							autoComplete='startup'
-							name='startup'
-							value={formData.startup}
-							onChange={(e) =>
-								handleChange(e as React.ChangeEvent<HTMLInputElement>)
-							}
-							disabled={!isEditing}>
-							<MenuItem value='Startup 1'>Startup 1</MenuItem>
-							<MenuItem value='Startup 2'>Startup 2</MenuItem>
-							{/* ... */}
-						</Select>
-					</FormControl>
-					<TextField
-						label={formData.password ? 'Password' : 'Password'}
-						name='password'
-						autoComplete='password'
-						value={formData.password}
-						onChange={handleChange}
-						disabled={!isEditing}
-						type='password'
-						sx={{ m: 1, width: '25ch' }}
-					/>
-					<TextField
-						label={formData.dni || 'Input yout DNI/NIE'}
-						name='dni'
-						autoComplete='dni'
-						value={formData.dni}
-						onChange={handleChange}
-						disabled={!isEditing}
-						sx={{ m: 1, width: '25ch' }}
-					/>
+					<Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', width: '100%' }}>
+						<Box sx={{ flex: '1 1 45%', mt: 1, mb: 1}}>
+							<TextField
+								label='First Name'
+								name='first_name'
+								autoComplete='first_name'
+								value={formData.first_name}
+								onChange={handleChange}
+								disabled={!isEditing}
+								fullWidth
+							/>
+						</Box>
+						<Box sx={{ flex: '1 1 45%', mt: 1, mb: 1}}>
+							<TextField
+								label='Last Name'
+								name='last_name'
+								autoComplete='last_name'
+								value={formData.last_name}
+								onChange={handleChange}
+								disabled={!isEditing}
+								fullWidth
+							/>
+						</Box>
+					</Box>
+					<Box sx={{ width: '100%', mt: 2 }}>
+						<TextField
+							label='Email'
+							name='email'
+							autoComplete='email'
+							value={formData.email}
+							onChange={handleChange}
+							disabled={!isEditing}
+							fullWidth
+						/>
+					</Box>
+					<Box sx={{ width: '100%', mt: 2 }}>
+						<TextField
+							label={formData.phone || 'Input your phone'}
+							name='phone'
+							autoComplete='phone'
+							value={formData.phone}
+							onChange={handleChange}
+							disabled={!isEditing}
+							fullWidth
+						/>
+					</Box>
+					<Box sx={{ width: '100%', mt: 2 }}>
+						<FormControl fullWidth>
+							<InputLabel id='startup-label'>
+								{formData.startup || 'Select a startup'}
+							</InputLabel>
+							<Select
+								labelId='startup-label'
+								label='Startup'
+								autoComplete='startup'
+								name='startup'
+								value={formData.startup}
+								onChange={(e) =>
+									handleChange(e as React.ChangeEvent<HTMLInputElement>)
+								}
+								disabled={!isEditing}>
+								<MenuItem value='Startup 1'>Startup 1</MenuItem>
+								<MenuItem value='Startup 2'>Startup 2</MenuItem>
+								{/* ... */}
+							</Select>
+						</FormControl>
+					</Box>
+					<Box sx={{ width: '100%', mt: 2 }}>
+						<TextField
+							label={formData.password ? 'Password' : 'Password'}
+							name='password'
+							autoComplete='password'
+							value={formData.password}
+							onChange={handleChange}
+							disabled={!isEditing}
+							type='password'
+							fullWidth
+						/>
+					</Box>
+					<Box sx={{ width: '100%', mt: 2 }}>
+						<TextField
+							label={formData.dni || 'Input your DNI/NIE'}
+							name='dni'
+							autoComplete='dni'
+							value={formData.dni}
+							onChange={handleChange}
+							disabled={!isEditing}
+							fullWidth
+						/>
+					</Box>
 					<Button
 						variant='contained'
 						onClick={isEditing ? handleSave : handleEdit}

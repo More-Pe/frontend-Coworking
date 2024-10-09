@@ -1,13 +1,13 @@
 import { useForm, Controller } from 'react-hook-form';
 import { loginUser } from '../../services/AuthServices';
-import Box from '@mui/material/Box';
-import { Typography, Button, TextField } from '@mui/material';
+import { Typography, Button, TextField, Box, Container } from '@mui/material';
 import { FormLogin } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Passport, CustomJwtPayload } from '../../types';
+import LoginImg from '../../assets/man-right.png'
 
 const CLogin = () => {
   const { setSessionData } = useAuth();
@@ -41,10 +41,19 @@ const CLogin = () => {
   };
 
   return (
+    <Container
+    sx={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: 4,
+      flexDirection: { xs: 'column', md: 'row' },
+    }}>
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        '& .MuiTextField-root': { m: 1, width: '100%' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -56,7 +65,12 @@ const CLogin = () => {
       				<Typography
 					variant='h2'
 					gutterBottom>
-					Login
+					Welcome Back!
+				</Typography>
+        <Typography
+					variant='body1'
+					sx={{ margin: '16px 0' }}>
+			Log in and dive into your workspace.
 				</Typography>
 
       <Controller
@@ -82,7 +96,6 @@ const CLogin = () => {
           />
         )}
       />
-
       <Controller
         name="password"
         control={control}
@@ -118,6 +131,19 @@ const CLogin = () => {
         Login
       </Button>
     </Box>
+    <Box
+				sx={{
+					flex: 1,
+					display: 'flex',
+					justifyContent: { xs: 'center', md: 'flex-end' },
+				}}>
+				<img
+					src={LoginImg}
+					alt='Placeholder'
+					style={{ width: '100%', maxWidth: '600px', borderRadius: '8px' }}
+				/>
+			</Box>
+    </Container>
   );
 };
 
