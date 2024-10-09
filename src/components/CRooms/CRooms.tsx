@@ -110,13 +110,13 @@ const CRooms = () => {
 					</Select>
 				</FormControl>
 				<Typography
-  variant='body1'
-  sx={{ margin: '16px 0' }}>
-  {selectedRoom ? 
-    `The ${selectedRoom.room_name} room has a capacity of ${selectedRoom.capacity} persons and is currently occupied by ${currentAccess} persons.` 
-    : ''}
-</Typography>
-				{isLoggedIn && (
+					variant='body1'
+					sx={{ margin: '16px 0' }}>
+					{selectedRoom
+						? `The ${selectedRoom.room_name} room has a capacity of ${selectedRoom.capacity} persons and is currently occupied by ${currentAccess} persons.`
+						: ''}
+				</Typography>
+				{isLoggedIn && selectedRoom && (
 					<Button
 						variant='contained'
 						color='primary'
