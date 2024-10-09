@@ -1,11 +1,11 @@
 export interface CustomJwtPayload {
 	role: string;
-  }
+}
 
- export interface Passport {
+export interface Passport {
 	token: string;
 	tokenData: CustomJwtPayload;
-  }
+}
 
 export interface AuthContextType {
 	token: string | null;
@@ -36,17 +36,24 @@ export interface CSurferProps {
 	content: React.ReactNode;
 	path: string;
 	className?: string;
-  }
+}
 
-  export interface User {
-    person_id: number;
-    role: string;
-    first_name: string;
-    last_name: string;
-    startup: string;
-    email: string;
-    password: string;
-    dni?: string | null; 
-    phone?: string | null; 
-    frequency_status: string;
+export interface User {
+	person_id: number;
+	role: string;
+	first_name: string;
+	last_name: string;
+	startup: string;
+	email: string;
+	password: string;
+	dni?: string | null;
+	phone?: string | null;
+	frequency_status: string;
+}
+
+export interface Startup {
+	startup_id: number;
+	name: string;
+	description: string;
+	program: string;
 }
