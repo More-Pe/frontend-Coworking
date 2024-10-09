@@ -11,7 +11,6 @@ import ManageAccounts from '@mui/icons-material/ManageAccounts';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import { useAuth } from '../../contexts/AuthContext';
 import { CSurfer } from '../CSurfer/CSurfer';
 
@@ -54,7 +53,6 @@ function NavBar() {
 			<Toolbar
 				disableGutters
 				sx={{ px: 2 }}>
-				<HomeWorkIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
 				<Typography
 					variant='h6'
 					noWrap
@@ -113,7 +111,7 @@ function NavBar() {
 								content={
 									<Typography sx={{ textAlign: 'center' }}>Rooms</Typography>
 								}
-								path='/rooms' // Asegúrate de que esta ruta esté definida
+								path='/rooms'
 							/>
 						</MenuItem>
 						{!isLoggedIn && (
@@ -145,7 +143,7 @@ function NavBar() {
 							</>
 						)}
 						{isLoggedIn && (
-							<>
+							<div>
 								<MenuItem
 									key='profile'
 									onClick={handleCloseNavMenu}>
@@ -177,7 +175,7 @@ function NavBar() {
 										/>
 									</MenuItem>
 								)}
-							</>
+							</div>
 						)}
 					</Menu>
 				</Box>
