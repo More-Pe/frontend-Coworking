@@ -1,5 +1,6 @@
 import AdminImg from '../../assets/admin-img.png';
 import { Container, Box, Button, ButtonGroup } from '@mui/material';
+import PersonsTable from './PersonsTable';
 
 const DashboardLayout = () => {
   const buttons = [
@@ -50,7 +51,8 @@ const DashboardLayout = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-      > RENDER CONDITIONAL CONTENT HERE
+      > 
+      <PersonsTable />
       </Box>
     </Container>
   );

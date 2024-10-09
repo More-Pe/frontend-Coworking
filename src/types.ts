@@ -37,3 +37,16 @@ export interface CSurferProps {
 	path: string;
 	className?: string;
   }
+
+  export interface User {
+    person_id: number;
+    role: string;
+    first_name: string;
+    last_name: string;
+    startup: string;
+    email: string;
+    password: string;
+    dni?: string | null; 
+    phone?: string | null; 
+    frequency_status: string;
+}

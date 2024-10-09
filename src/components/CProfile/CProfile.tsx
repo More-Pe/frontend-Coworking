@@ -191,14 +191,13 @@ const CProfile = () => {
 								label='Startup'
 								autoComplete='startup'
 								name='startup'
-								value={formData.startup}
+								value={formData.startup || ''}
 								onChange={(e) =>
 									handleChange(e as React.ChangeEvent<HTMLInputElement>)
 								}
 								disabled={!isEditing}>
 								<MenuItem value='Startup 1'>Startup 1</MenuItem>
 								<MenuItem value='Startup 2'>Startup 2</MenuItem>
-								{/* ... */}
 							</Select>
 						</FormControl>
 					</Box>
