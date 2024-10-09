@@ -1,5 +1,7 @@
 export interface CustomJwtPayload {
+	person_id: number;
 	role: string;
+	email: string;
 }
 
 export interface Passport {

@@ -9,12 +9,15 @@ import {
 	FormControl,
 	InputLabel,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import RoomImg from '../../assets/hot-desk-img.png';
+import { useAuth } from '../../contexts/AuthContext';
 import { getCurrentPeopleInRoom } from '../../services/AccessServices';
 import { getRoomById, getAllRooms } from '../../services/RoomServices';
 import { Room } from '../../types';
 
 const CRooms = () => {
+	const { isLoggedIn } = useAuth();
 	const [rooms, setRooms] = useState<Room[]>([]);
 	const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 	const [currentAccess, setCurrentAccess] = useState(0);
@@ -87,7 +90,7 @@ const CRooms = () => {
 				<FormControl
 					fullWidth
 					sx={{ marginBottom: 2 }}>
-					<InputLabel id='room-select-label'>Select a Room</InputLabel>
+					<InputLabel id='room-select-label'>Select a room</InputLabel>
 					<Select
 						labelId='room-select-label'
 						value={selectedRoom?.room_id || ''}
@@ -107,22 +110,28 @@ const CRooms = () => {
 					</Select>
 				</FormControl>
 				<Typography
-					variant='body1'
-					sx={{ margin: '16px 0' }}>
-					We offer this space in Hot Desk modality. The capacity is for{' '}
-					{selectedRoom ? selectedRoom.capacity : '_'} persons.
-				</Typography>
-				<Typography
-					variant='body1'
-					sx={{ margin: '16px 0' }}>
-					In this moment this room is occupied by: {currentAccess} persons.
-				</Typography>
-				<Button
-					variant='contained'
-					color='primary'
-					size='large'>
-					Check-in
-				</Button>
+  variant='body1'
+  sx={{ margin: '16px 0' }}>
+  {selectedRoom ? 
+    `The ${selectedRoom.room_name} room has a capacity of ${selectedRoom.capacity} persons and is currently occupied by ${currentAccess} persons.` 
+    : ''}
+</Typography>
+				{isLoggedIn && (
+					<Button
+						variant='contained'
+						color='primary'
+						size='large'>
+						Check-in
+					</Button>
+				)}
+				{!isLoggedIn && (
+					<Typography
+						variant='h6'
+						sx={{ margin: '16px 0' }}>
+						To use any room, please <Link to='/login'>log in</Link> and then
+						return to this page.
+					</Typography>
+				)}
 			</Box>
 		</Container>
 	);
