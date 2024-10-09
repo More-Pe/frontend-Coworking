@@ -10,8 +10,8 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import { Edit, Check, Close } from "@mui/icons-material";
-import { getAllStartups, updateStartup } from "../../services/StartupService";
+import { Edit, Check, Close, Delete } from "@mui/icons-material";
+import { getAllStartups, updateStartup, deleteStartup } from "../../services/StartupService";
 import { useAuth } from "../../contexts/AuthContext";
 import { Startup } from '../../types';
 
@@ -52,6 +52,22 @@ const StartupTable = () => {
     setEditedStartup({});
   };
 
+  const handleDeleteClick = async (startupId: number) => {
+    if (!token) {
+      console.error("Token not available for deleting startup");
+      return;
+    }
+    if (window.confirm("Are you sure you want to delete this startup?")) {
+      try {
+        await deleteStartup(startupId, token);
+        const updatedStartups = startups.filter((startup) => startup.startup_id !== startupId);
+        setStartups(updatedStartups);
+      } catch (error) {
+        console.error("Error deleting startup:", error);
+      }
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditedStartup((prev) => ({
@@ -87,7 +103,8 @@ const StartupTable = () => {
             <TableCell>Name</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Program</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell>Edit</TableCell>
+            <TableCell>Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -145,6 +162,11 @@ const StartupTable = () => {
                     <Edit />
                   </IconButton>
                 )}
+              </TableCell>
+              <TableCell>
+                <IconButton onClick={() => handleDeleteClick(startup.startup_id)}>
+                  <Delete />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}

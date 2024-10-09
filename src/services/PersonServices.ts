@@ -72,9 +72,13 @@ export const updatePersonByAdmin = async (id: number, updateData: any, token: st
     }
 };
 
-export const deletePerson = async (id: number) => {
+export const deletePerson = async (id: number, token: string) => {
     try {
-        const response = await axios.delete(`${URL}/${id}`);
+        const response = await axios.delete(`${URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error deleting user');

@@ -10,8 +10,8 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import { Edit, Check, Close } from "@mui/icons-material";
-import { getPersons, updatePersonByAdmin } from "../../services/PersonServices";
+import { Edit, Check, Close, Delete } from "@mui/icons-material";
+import { getPersons, updatePersonByAdmin, deletePerson } from "../../services/PersonServices";
 import { User } from '../../types';
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -40,6 +40,38 @@ const PersonsTable = () => {
   const handleEditClick = (userId: number, userData: User) => {
     setEditRowId(userId);
     setEditedUser(userData);
+  };
+
+  const fetchAndSetUsers = async () => {
+    if (token) { 
+      try {
+        const allUsers = await getPersons(token);
+        setUsers(allUsers.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    } else {
+      console.error("Token not available");
+    }
+  };
+  
+  useEffect(() => {
+    fetchAndSetUsers();
+  }, [token]);
+  
+  const handleDeleteClick = async (userId: number) => {
+    if (!token) {
+      console.error("Token not available for deleting person");
+      return;
+    }
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        await deletePerson(userId, token);
+        fetchAndSetUsers();
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
+    }
   };
 
   const handleCancelEdit = () => {
@@ -85,7 +117,8 @@ const PersonsTable = () => {
             <TableCell>Phone</TableCell>
             <TableCell>DNI</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell>Edit</TableCell>
+            <TableCell>Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -96,7 +129,7 @@ const PersonsTable = () => {
                 {editRowId === user.person_id ? (
                   <TextField
                     name="role"
-                    value={editedUser.role || user.role}
+                    value={editedUser .role || user.role}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -108,7 +141,7 @@ const PersonsTable = () => {
                 {editRowId === user.person_id ? (
                   <TextField
                     name="email"
-                    value={editedUser.email || user.email}
+                    value={editedUser .email || user.email}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -116,12 +149,12 @@ const PersonsTable = () => {
                   user.email
                 )}
               </TableCell>
-
+  
               <TableCell>
                 {editRowId === user.person_id ? (
                   <TextField
                     name="first_name"
-                    value={editedUser.first_name || user.first_name}
+                    value={editedUser .first_name || user.first_name}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -129,12 +162,12 @@ const PersonsTable = () => {
                   user.first_name
                 )}
               </TableCell>
-
+  
               <TableCell>
                 {editRowId === user.person_id ? (
                   <TextField
                     name="last_name"
-                    value={editedUser.last_name || user.last_name}
+                    value={editedUser .last_name || user.last_name}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -146,7 +179,7 @@ const PersonsTable = () => {
                 {editRowId === user.person_id ? (
                   <TextField
                     name="startup"
-                    value={editedUser.startup || user.startup}
+                    value={editedUser .startup || user.startup}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -158,7 +191,7 @@ const PersonsTable = () => {
                 {editRowId === user.person_id ? (
                   <TextField
                     name="phone"
-                    value={editedUser.phone || user.phone}
+                    value={editedUser .phone || user.phone}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -170,7 +203,7 @@ const PersonsTable = () => {
                 {editRowId === user.person_id ? (
                   <TextField
                     name="dni"
-                    value={editedUser.dni || user.dni}
+                    value={editedUser .dni || user.dni}
                     onChange={handleInputChange}
                     variant="standard"
                   />
@@ -195,12 +228,17 @@ const PersonsTable = () => {
                   </IconButton>
                 )}
               </TableCell>
+              <TableCell>
+                <IconButton onClick={() => handleDeleteClick(user.person_id)}>
+                  <Delete />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-};
+}
 
 export default PersonsTable;
