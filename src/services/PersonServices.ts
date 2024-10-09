@@ -2,9 +2,13 @@ import axios from 'axios';
 
 const URL = 'http://localhost:4000/api/persons';
 
-export const getPersons = async () => {
+export const getPersons = async (token: string) => {
     try {
-        const response = await axios.get(URL);
+        const response = await axios.get(URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error retrieving users');
