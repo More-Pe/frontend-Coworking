@@ -43,7 +43,7 @@ function NavBar() {
 	const handleLogout = () => {
 		logout();
 		handleCloseUserMenu();
-		navigate('/home');
+		navigate('/');
 	};
 
 	return (
@@ -101,7 +101,7 @@ function NavBar() {
 								content={
 									<Typography sx={{ textAlign: 'center' }}>Home</Typography>
 								}
-								path='/home'
+								path='/'
 							/>
 						</MenuItem>
 						<MenuItem
@@ -218,7 +218,7 @@ function NavBar() {
 								Home
 							</Button>
 						}
-						path='/home'
+						path='/'
 					/>
 					<CSurfer
 						content={

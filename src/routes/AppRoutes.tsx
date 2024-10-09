@@ -11,7 +11,7 @@ const AppRoutes = () => {
 	return (
 		<Routes>
 			<Route
-				path='/home'
+				path='/'
 				element={<Home />}
 			/>
 			<Route

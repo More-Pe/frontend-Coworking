@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, Container } from '@mui/material';
+import { CSurfer } from '../CSurfer/CSurfer';
 import HomeImg from '../../assets/home-img.png';
 
 const LandingPage: React.FC = () => {
@@ -35,12 +36,16 @@ const LandingPage: React.FC = () => {
 					provides an easy-to-use interface and a powerful set of tools to
 					manage your operations effectively.
 				</Typography>
-				<Button
-					variant='contained'
-					color='primary'
-					size='large'>
-					Get Started
-				</Button>
+				<CSurfer
+					content={
+						<Button
+							variant='contained'
+							color='primary'
+							size='large'>
+							Get Started
+						</Button>
+					}
+					path='/register'></CSurfer>
 			</Box>
 			<Box
 				sx={{
