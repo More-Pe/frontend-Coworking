@@ -1,5 +1,5 @@
 # 🏢 Coworking Frontend
-<img alt="coworking banner" src="./src/assets/img/coworking-banner.png">
+<img alt="coworking banner" src="./src/assets/img/home-screen.png">
 Coworking is a management application for shared workspaces that allows users to book rooms, manage access, and visualize information about space usage.
 
 ## 🌐 Coworking Frontend System
@@ -44,9 +44,13 @@ npm run dev
 5. User Credentials
 To perform tests, you can use the following pre-registered users that are defined in the backend seeders:
 
-Administrator
-
+**Administrator**
 Email: admin@admin.com Password: 123456789
+
+**Regular User** 
+Email: johndoe@example.com Password: 123456789
+
+You can use these credentials to log in and explore the system's functionalities.
 
 6. Testing the System
 Once the development server is running, open your browser and navigate to http://localhost:5173 (or the port indicated in your terminal). From there, you can interact with the application.
