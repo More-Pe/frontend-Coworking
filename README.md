@@ -5,17 +5,13 @@ Coworking is a management application for shared workspaces that allows users to
 ## 🛠️ Features
 The application offers the following features:
 
-User Authentication: Users can register and log in to the application. Registration involves creating a new account with email and password, while logging in generates a token for authenticated access.
-
-Room Management: Users can view room availability, book rooms, and manage their bookings.
-
-Access Management: Users can register their entries and exits from the rooms.
-
-Administrative Reports: Administrators can view reports on room usage and access.
-
-Responsive Design: The application features a responsive design that adapts seamlessly to various screen sizes and resolutions.
-
-Error Handling: The system includes comprehensive error handling to manage issues like invalid user credentials, missing required fields, and failed database operations.
+- **🔒 Access Logging**: The system allows for the registration of individuals accessing different rooms, capturing essential details such as access time, room information, and user identity.
+- **📜 Access History**: Administrators can review a complete history of all access records, providing insights into room usage and occupancy patterns.
+- **👥 User Management**: The application supports the management of user profiles, enabling the addition, updating, and removal of users while ensuring that only authorized personnel can access specific areas.
+- **📊 Reporting**: The system generates detailed reports based on access history, offering insights into usage patterns and security, and allowing for data export for further analysis.
+- **🚀 Startup Management**: The application includes functionalities for managing startup information, allowing for the creation, updating, and deletion of startup records, as well as retrieving associated personnel.
+- **🏢 Room Management**: Users can create, update, and delete room records, as well as view the current state of rooms, including occupancy and capacity details.
+- **🔐 Access Control**: The application provides mechanisms for checking in and checking out of rooms, ensuring accurate tracking of room usage and reservations.
 
 ## ⚙️ Stack
 <div align="center"> 
