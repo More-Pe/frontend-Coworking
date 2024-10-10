@@ -67,3 +67,7 @@ export interface Room {
 	capacity: number;
 	room_type: string;
 }
+
+export interface AdministrationLabelProps {
+	token: string;
+  }

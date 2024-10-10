@@ -4,7 +4,7 @@ import { Container, Box, Button, ButtonGroup } from '@mui/material';
 import PersonsTable from './PersonsTable'; 
 import RoomsTable from './RoomsTable'; 
 import StartupsTable from './StartupsTable'; 
-import ReportsOptions from './ReportsOptions'; 
+import ReportsOptions from './ReportsOptions';
 import DefaultComponent from './DefaultComponent';
 
 const DashboardLayout = () => {
