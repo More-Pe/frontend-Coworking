@@ -12,16 +12,19 @@ import {
 import { Link } from 'react-router-dom';
 import RoomImg from '../../assets/hot-desk-img.png';
 import { useAuth } from '../../contexts/AuthContext';
-import { getCurrentPeopleInRoom } from '../../services/AccessServices';
+import { getCurrentPeopleInRoom, registerEntry, registerExit } from '../../services/AccessServices';
 import { getRoomById, getAllRooms } from '../../services/RoomServices';
+import { getCurrentAccess } from '../../services/PersonServices';
 import { Room } from '../../types';
 
 const CRooms = () => {
-	const { isVisitor, isLoggedIn } = useAuth();
+	const { isVisitor, isLoggedIn, token, passport } = useAuth();
 	const [rooms, setRooms] = useState<Room[]>([]);
 	const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-	const [currentAccess, setCurrentAccess] = useState(0); //Of room
+	const [currentAccess, setCurrentAccess] = useState(0);
 	const [error, setError] = useState<string | null>(null);
+	const [isCheckedIn, setIsCheckedIn] = useState(false);
+	const [currentRoomId, setCurrentRoomId] = useState<number | null>(null);
 
 	useEffect(() => {
 		const fetchRooms = async () => {
@@ -36,6 +39,26 @@ const CRooms = () => {
 		fetchRooms();
 	}, []);
 
+	useEffect(() => {
+		const checkCurrentAccess = async () => {
+			if (isLoggedIn && token && passport) {
+				try {
+					const response = await getCurrentAccess(passport.tokenData.person_id);
+					if (response.data && response.data.room_id) {
+						setIsCheckedIn(true);
+						setCurrentRoomId(response.data.room_id);
+					} else {
+						setIsCheckedIn(false);
+						setCurrentRoomId(null);
+					}
+				} catch (error) {
+					console.error('Error checking current access:', error);
+				}
+			}
+		};
+		checkCurrentAccess();
+	}, [isLoggedIn, token, passport]);
+
 	const handleRoomSelect = async (roomId: number) => {
 		try {
 			const roomResponse = await getRoomById(roomId);
@@ -43,9 +66,45 @@ const CRooms = () => {
 
 			const currentPeopleResponse = await getCurrentPeopleInRoom(roomId);
 			setCurrentAccess(currentPeopleResponse.data.count);
+			
+			if (passport && currentPeopleResponse.data.people) {
+				const isUserInRoom = currentPeopleResponse.data.people.some(
+					(person: any) => person.person_id === passport.tokenData.person_id
+				);
+				setIsCheckedIn(isUserInRoom);
+				setCurrentRoomId(isUserInRoom ? roomId : null);
+			}
 		} catch (error) {
 			console.error('Error fetching room data:', error);
 			setError('Room information could not be loaded.');
+		}
+	};
+
+	const handleCheckInOut = async () => {
+		if (!token || !selectedRoom) return;
+
+		try {
+			if (isCheckedIn) {
+				await registerExit(selectedRoom.room_id, token);
+				setIsCheckedIn(false);
+				setCurrentRoomId(null);
+			} else {
+				await registerEntry(selectedRoom.room_id, token);
+				setIsCheckedIn(true);
+				setCurrentRoomId(selectedRoom.room_id);
+			}
+			// Refresh the current access count and check user status
+			const currentPeopleResponse = await getCurrentPeopleInRoom(selectedRoom.room_id);
+			setCurrentAccess(currentPeopleResponse.data.count);
+			if (passport && currentPeopleResponse.data.people) {
+				const isUserInRoom = currentPeopleResponse.data.people.some(
+					(person: any) => person.person_id === passport.tokenData.person_id
+				);
+				setIsCheckedIn(isUserInRoom);
+			}
+		} catch (error) {
+			console.error('Error during check-in/out:', error);
+			setError('Failed to check-in/out. Please try again.');
 		}
 	};
 
@@ -133,11 +192,18 @@ const CRooms = () => {
 				)}
 				{isLoggedIn && !isVisitor && selectedRoom && (
 					<Button
-						variant='contained'
-						color='primary'
-						size='large'>
-						Check-in
+						variant='outlined'
+						color={isCheckedIn ? 'error' : 'success'}
+						size='large'
+						onClick={handleCheckInOut}
+					>
+						{isCheckedIn ? 'Check-out' : 'Check-in'}
 					</Button>
+				)}
+				{isCheckedIn && currentRoomId !== selectedRoom?.room_id && (
+					<Typography variant='body1' color='error' sx={{ mt: 2 }}>
+						You are currently checked in to another room. Please select that room to check out.
+					</Typography>
 				)}
 			</Box>
 		</Container>
