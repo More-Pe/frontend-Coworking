@@ -19,7 +19,7 @@ const DefaultComponent = () => {
 					You've got control!
 				</Typography>
 				<Typography
-					variant='body1'
+					variant='h5'
 					sx={{ margin: '16px 0' }}>
 					Step into your admin dashboard, where every decision is at your fingertips. Easily manage people, rooms, and reports with precision. Stay informed, stay efficient, and steer your operations towards success!
 				</Typography>

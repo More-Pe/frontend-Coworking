@@ -124,7 +124,7 @@ const CProfile = () => {
 				<Typography variant="h2" gutterBottom>
 					Hello again, {formData.first_name}!
 				</Typography>
-				<Typography variant='body1' sx={{ margin: '16px 0' }}>
+				<Typography variant='h5' sx={{ margin: '16px 0' }}>
 					Log in and dive into your workspace.
 				</Typography>
 				<Box
@@ -172,10 +172,10 @@ const CProfile = () => {
 					</Box>
 					<Box sx={{ width: '100%', mt: 2 }}>
 						<TextField
-							label={formData.phone || 'Input your phone'}
+							label='Phone'
 							name='phone'
 							autoComplete='phone'
-							value={formData.phone}
+							value={formData.phone || 'Input yout phone number'}
 							onChange={handleChange}
 							disabled={!isEditing}
 							fullWidth
@@ -213,12 +213,23 @@ const CProfile = () => {
 							fullWidth
 						/>
 					</Box>
+          <Box sx={{ width: '100%', mt: 2 }}>
+						<TextField
+							label='Email'
+							name='email'
+							autoComplete='email'
+							value={formData.email}
+							onChange={handleChange}
+							disabled={!isEditing}
+							fullWidth
+						/>
+					</Box>
 					<Box sx={{ width: '100%', mt: 2 }}>
 						<TextField
-							label={formData.dni || 'Input your DNI/NIE'}
-							name='dni'
+							label='DNI/NIE'
+							name='DNI/NIE'
 							autoComplete='dni'
-							value={formData.dni}
+							value={formData.dni || 'Input yor DNI or NIE'}
 							onChange={handleChange}
 							disabled={!isEditing}
 							fullWidth

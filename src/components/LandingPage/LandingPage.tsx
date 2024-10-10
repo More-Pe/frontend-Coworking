@@ -30,7 +30,7 @@ const LandingPage: React.FC = () => {
 					Welcome to Our Service
 				</Typography>
 				<Typography
-					variant='body1'
+					variant='h5'
 					sx={{ margin: '16px 0' }}>
 					We offer the best solutions to boost your business. Our platform
 					provides an easy-to-use interface and a powerful set of tools to

@@ -385,7 +385,7 @@ function NavBar() {
 								<ManageAccounts
 									sx={{
 										fontSize: '2rem',
-										color: 'primary.main',
+										color: '#757575',
 									}}
 								/>
 							</IconButton>

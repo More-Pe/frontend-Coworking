@@ -103,7 +103,7 @@ const CRegister = () => {
         Join The Community!
 				</Typography>
         <Typography
-					variant='body1'
+					variant='h5'
 					sx={{ margin: '16px 0' }}>
 			Sign up now to unlock your workspace.
 				</Typography>

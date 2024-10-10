@@ -7,6 +7,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const useAuthorization = (): AuthContextType => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isVisitor , setIsVisitor ] = useState(false);
   const [isUser , setIsUser ] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [passport, setPassport] = useState<Passport | null>(null);
@@ -26,6 +27,7 @@ export const useAuthorization = (): AuthContextType => {
   const setSessionData = (passport: Passport) => {
     setToken(passport.token);
     setIsLoggedIn(true);
+    setIsVisitor (passport.tokenData.role === 'visitor');
     setIsUser (passport.tokenData.role === 'user');
     setIsAdmin(passport.tokenData.role === 'admin');
     setPassport(passport); 
@@ -35,13 +37,14 @@ export const useAuthorization = (): AuthContextType => {
   const logout = () => {
     setToken(null);
     setIsLoggedIn(false);
+    setIsVisitor(false);
     setIsUser(false);
     setIsAdmin(false);
     localStorage.removeItem('passport');
     navigate('/login');
   };
 
-  return { passport, token, isLoggedIn, isUser, isAdmin, setSessionData, logout };
+  return { passport, token, isLoggedIn, isVisitor, isUser, isAdmin, setSessionData, logout };
 };
 
 export const useAuth = (): AuthContextType => {

@@ -68,7 +68,7 @@ const CLogin = () => {
 					Welcome Back!
 				</Typography>
         <Typography
-					variant='body1'
+					variant='h5'
 					sx={{ margin: '16px 0' }}>
 			Log in and dive into your workspace.
 				</Typography>

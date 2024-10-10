@@ -17,10 +17,10 @@ import { getRoomById, getAllRooms } from '../../services/RoomServices';
 import { Room } from '../../types';
 
 const CRooms = () => {
-	const { isLoggedIn } = useAuth();
+	const { isVisitor, isLoggedIn } = useAuth();
 	const [rooms, setRooms] = useState<Room[]>([]);
 	const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-	const [currentAccess, setCurrentAccess] = useState(0);
+	const [currentAccess, setCurrentAccess] = useState(0); //Of room
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -110,20 +110,12 @@ const CRooms = () => {
 					</Select>
 				</FormControl>
 				<Typography
-					variant='body1'
+					variant='h5'
 					sx={{ margin: '16px 0' }}>
 					{selectedRoom
 						? `The ${selectedRoom.room_name} room has a capacity of ${selectedRoom.capacity} persons and is currently occupied by ${currentAccess} persons.`
 						: ''}
 				</Typography>
-				{isLoggedIn && selectedRoom && (
-					<Button
-						variant='contained'
-						color='primary'
-						size='large'>
-						Check-in
-					</Button>
-				)}
 				{!isLoggedIn && (
 					<Typography
 						variant='h6'
@@ -131,6 +123,21 @@ const CRooms = () => {
 						To use any room, please <Link to='/login'>log in</Link> and then
 						return to this page.
 					</Typography>
+				)}
+				{isVisitor && selectedRoom && (
+					<Typography
+						variant='h6'
+						sx={{ margin: '16px 0' }}>
+						Authorization pending. Please check back later to access rooms.
+					</Typography>
+				)}
+				{isLoggedIn && !isVisitor && selectedRoom && (
+					<Button
+						variant='contained'
+						color='primary'
+						size='large'>
+						Check-in
+					</Button>
 				)}
 			</Box>
 		</Container>
