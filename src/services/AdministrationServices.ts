@@ -19,10 +19,10 @@ export const generateDailyReport = async (report_date: string, token: string) =>
     }
 };
 
-export const getReportsInRange = async (start_date: string, end_date: string, token: string) => {
+export const getReportsInRange = async (start_date: string, end_date: string, token: string, page: number, limit: number) => {
     try {
         const response = await axios.get(`${URL}/reports`, {
-            params: { start_date, end_date },
+            params: { start_date, end_date, page, limit },
             headers: {
                 Authorization: `Bearer ${token}`,
             },

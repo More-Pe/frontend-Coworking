@@ -1,20 +1,22 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
-	Button,
-	FormControl,
-	FormLabel,
-	MenuItem,
-	Select,
-	TextField,
-	SelectChangeEvent,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
+  Button,
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Select,
+  TextField,
+  SelectChangeEvent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  Pagination
 } from '@mui/material';
 import {
 	generateDailyReport,
@@ -22,6 +24,7 @@ import {
 	getRoomUsageStats,
 } from '../../services/AdministrationServices';
 import { useAuth } from '../../contexts/AuthContext';
+import { DailyReportResponse } from '../../types';
 
 const ReportsOptions: React.FC = () => {
 	const { token } = useAuth();
@@ -30,11 +33,15 @@ const ReportsOptions: React.FC = () => {
 	const [startDate, setStartDate] = useState('');
 	const [endDate, setEndDate] = useState('');
 	const [data, setData] = useState<any>(null);
+	const [page, setPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
+	const limit = 5;
 
 	const handleLabelChange = (event: SelectChangeEvent<string>) => {
 		const newValue = event.target.value;
 		setLabel(newValue);
 		setData(null);
+		setPage(1);
 	};
 
 	const handleReportDateChange = (
@@ -53,6 +60,10 @@ const ReportsOptions: React.FC = () => {
 		setEndDate(event.target.value);
 	};
 
+	const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+		setPage(value);
+	};
+
 	const handleGenerateReport = async () => {
 		if (token) {
 			try {
@@ -60,23 +71,32 @@ const ReportsOptions: React.FC = () => {
 					const response = await generateDailyReport(reportDate, token);
 					setData(response.data);
 				} else if (label === 'Reports by period') {
-					const response = await getReportsInRange(startDate, endDate, token);
-					setData(response.data);
+					const response = await getReportsInRange(startDate, endDate, token, page, limit);
+					setData(response.data.reports);
+					setTotalPages(Math.ceil(response.data.total / limit));
 				} else if (label === 'Room usage') {
 					const response = await getRoomUsageStats(token);
 					setData(response.data);
 				}
 			} catch (error) {
-				console.error(error);
+				console.error('Error fetching report:', error);
+				setData(null);
 			}
 		} else {
 			console.error('Token not available');
 		}
 	};
 
+	useEffect(() => {
+		if (label === 'Reports by period' && startDate && endDate) {
+			handleGenerateReport();
+		}
+	}, [page, startDate, endDate, label]);
+
 	const renderDailyReportTable = () => {
-		if (!data || !data.report) return null;
-		const { report, peakHour } = data;
+		if (!data) return null;
+		const report = data as DailyReportResponse;
+		
 		return (
 			<TableContainer component={Paper}>
 				<Table>
@@ -92,15 +112,53 @@ const ReportsOptions: React.FC = () => {
 					</TableHead>
 					<TableBody>
 						<TableRow>
-							<TableCell>
-								{new Date(report.report_date).toLocaleDateString()}
-							</TableCell>
-							<TableCell>{report.total_accesses}</TableCell>
+							<TableCell>{new Date(report.report_date).toLocaleDateString()}</TableCell>
+							<TableCell>{report.total_accesses.count}</TableCell>
 							<TableCell>{report.total_absences}</TableCell>
-							<TableCell>{report.frequent_users || 'None'}</TableCell>
-							<TableCell>{report.infrequent_users || 'None'}</TableCell>
-							<TableCell>{peakHour}</TableCell>
+							<TableCell>{report.frequent_users}</TableCell>
+							<TableCell>{report.infrequent_users}</TableCell>
+							<TableCell>{report.peak_hour}</TableCell>
 						</TableRow>
+					</TableBody>
+				</Table>
+
+				<Typography variant="h6" sx={{ mt: 2, mb: 1 }}>Accesses by Room</Typography>
+				<Table>
+					<TableHead>
+						<TableRow>
+							<TableCell>Room</TableCell>
+							<TableCell>Accesses</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{Object.entries(report.accesses_by_room).map(([room, accesses]) => (
+							<TableRow key={room}>
+								<TableCell>{room}</TableCell>
+								<TableCell>{accesses}</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+
+				<Typography variant="h6" sx={{ mt: 2, mb: 1 }}>Users with Access</Typography>
+				<Table>
+					<TableHead>
+						<TableRow>
+							<TableCell>User ID</TableCell>
+							<TableCell>Name</TableCell>
+							<TableCell>Startup</TableCell>
+							<TableCell>Last Access</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{report.total_accesses.persons.map((person) => (
+							<TableRow key={person.user_id}>
+								<TableCell>{person.user_id}</TableCell>
+								<TableCell>{`${person.first_name} ${person.last_name}`}</TableCell>
+								<TableCell>{person.startup}</TableCell>
+								<TableCell>{new Date(person.last_access).toLocaleString()}</TableCell>
+							</TableRow>
+						))}
 					</TableBody>
 				</Table>
 			</TableContainer>
@@ -108,34 +166,46 @@ const ReportsOptions: React.FC = () => {
 	};
 
 	const renderReportsByPeriodTable = () => {
-		if (!data || !Array.isArray(data)) return null;
+		if (!data || !Array.isArray(data) || data.length === 0) {
+			return <Typography>No data available for the selected period.</Typography>;
+		}
 		return (
-			<TableContainer component={Paper}>
-				<Table>
-					<TableHead>
-						<TableRow>
-							<TableCell>Report Date</TableCell>
-							<TableCell>Total Accesses</TableCell>
-							<TableCell>Total Absences</TableCell>
-							<TableCell>Frequent Users</TableCell>
-							<TableCell>Infrequent Users</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{data.map((report: any) => (
-							<TableRow key={report.report_id}>
-								<TableCell>
-									{new Date(report.report_date).toLocaleDateString()}
-								</TableCell>
-								<TableCell>{report.total_accesses}</TableCell>
-								<TableCell>{report.total_absences}</TableCell>
-								<TableCell>{report.frequent_users || 'None'}</TableCell>
-								<TableCell>{report.infrequent_users || 'None'}</TableCell>
+			<>
+				<TableContainer component={Paper}>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<TableCell>Report Date</TableCell>
+								<TableCell>Total Accesses</TableCell>
+								<TableCell>Total Absences</TableCell>
+								<TableCell>Frequent Users</TableCell>
+								<TableCell>Infrequent Users</TableCell>
+								<TableCell>Peak Hour</TableCell>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
+						</TableHead>
+						<TableBody>
+							{data.map((report: DailyReportResponse) => (
+								<TableRow key={report.report_date.toString()}>
+									<TableCell>{new Date(report.report_date).toLocaleDateString()}</TableCell>
+									<TableCell>{report.total_accesses.count}</TableCell>
+									<TableCell>{report.total_absences}</TableCell>
+									<TableCell>{report.frequent_users}</TableCell>
+									<TableCell>{report.infrequent_users}</TableCell>
+									<TableCell>{report.peak_hour}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				{totalPages > 1 && (
+					<Pagination
+						count={totalPages}
+						page={page}
+						onChange={handlePageChange}
+						sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}
+					/>
+				)}
+			</>
 		);
 	};
 
@@ -204,7 +274,11 @@ const ReportsOptions: React.FC = () => {
 						type='date'
 						value={reportDate}
 						onChange={handleReportDateChange}
-						InputLabelProps={{ shrink: true }}
+						slotProps={{
+							inputLabel: {
+								shrink: true
+							}
+						}}
 						fullWidth
 						sx={{ mb: 2 }}
 					/>
@@ -223,7 +297,11 @@ const ReportsOptions: React.FC = () => {
 						type='date'
 						value={startDate}
 						onChange={handleStartDateChange}
-						InputLabelProps={{ shrink: true }}
+						slotProps={{
+							inputLabel: {
+								shrink: true
+							}
+						}}
 						fullWidth
 						sx={{ mb: 2 }}
 					/>
@@ -232,7 +310,11 @@ const ReportsOptions: React.FC = () => {
 						type='date'
 						value={endDate}
 						onChange={handleEndDateChange}
-						InputLabelProps={{ shrink: true }}
+						slotProps={{
+							inputLabel: {
+								shrink: true
+							}
+						}}
 						fullWidth
 						sx={{ mb: 2 }}
 					/>
