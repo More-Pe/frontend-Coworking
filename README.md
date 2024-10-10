@@ -2,10 +2,7 @@
 <img alt="coworking banner" src="./src/assets/home-screen.png">
 Coworking is a management application for shared workspaces that allows users to book rooms, manage access, and visualize information about space usage.
 
-## 🌐 Coworking Frontend System
-This project is the frontend of the coworking management application. It is designed to provide a smooth user experience and ensure robust data management and security.
-
-🛠️ Features
+## 🛠️ Features
 The application offers the following features:
 
 User Authentication: Users can register and log in to the application. Registration involves creating a new account with email and password, while logging in generates a token for authenticated access.
@@ -48,7 +45,10 @@ To perform tests, you can use the following pre-registered users that are define
 Email: admin@admin.com Password: 123456789
 
 **Regular User** 
-Email: johndoe@example.com Password: 123456789
+Email: user@user.com Password: 123456789
+
+**Visitor User** 
+Email: visitor@visitor.com Password: 123456789
 
 You can use these credentials to log in and explore the system's functionalities.
 
@@ -68,7 +68,7 @@ Throughout the program, I had the privilege of learning from experienced instruc
 
 I also want to thank my fellow classmates for their camaraderie and collaboration, specially to Yoana. Working together on projects and sharing knowledge and ideas was an essential part of my learning experience.
 
-###Thank you!
+### Thank you!
 
 ## 📞 Contact
 
