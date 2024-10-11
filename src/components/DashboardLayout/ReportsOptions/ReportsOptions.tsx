@@ -98,14 +98,14 @@ const ReportsOptions: React.FC = () => {
 					displayEmpty
 					renderValue={(selected) => {
 						if (selected === '') {
-							return <em>Choose report</em>;
+							return <>Choose report type</>;
 						}
 						return selected;
 					}}>
 					<MenuItem
 						value=''
 						disabled>
-						<em>Choose report type</em>
+						Choose report type
 					</MenuItem>
 					<MenuItem value='Daily Report'>Daily Report</MenuItem>
 					<MenuItem value='Reports by period'>Reports by period</MenuItem>
