@@ -75,3 +75,12 @@ export const getPersonsByStartupId = async (id: number, token: string) => {
         throw new Error(error.response?.data?.message || 'Error retrieving persons for startup');
     }
 };
+
+export const getStartupPrograms = async () => {
+    try {
+        const response = await axios.get(`${URL}/programs`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Error retrieving startups');
+    }
+};

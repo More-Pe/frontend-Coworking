@@ -1,3 +1,5 @@
+import { SelectChangeEvent } from "@mui/material";
+
 export interface CustomJwtPayload {
 	person_id: number;
 	role: string;
@@ -70,23 +72,53 @@ export interface Room {
 
 export interface AdministrationLabelProps {
 	token: string;
-  }
+}
 
 export interface DailyReportResponse {
 	report_date: Date;
 	total_accesses: {
-	  count: number;
-	  persons: Array<{
-		user_id: number;
-		first_name: string;
-		last_name: string;
-		startup: string;
-		last_access: Date;
-	  }>;
+		count: number;
+		persons: Array<{
+			user_id: number;
+			first_name: string;
+			last_name: string;
+			startup: string;
+			last_access: Date;
+		}>;
 	};
 	total_absences: number;
 	frequent_users: number;
 	infrequent_users: number;
 	peak_hour: string;
 	accesses_by_room: { [key: string]: number };
-  }
+}
+
+export interface DailyReportProps {
+	data: DailyReportResponse;
+}
+
+export interface PeriodReportProps {
+	data: DailyReportResponse[];
+	page: number;
+	totalPages: number;
+	onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+}
+
+export interface RoomUsageData {
+	room_name: string;
+	totalUses: number;
+	averageStay: string;
+	absences: number;
+	peakHour: string;
+	longestPeriodWithoutUse: string;
+}
+
+export interface RoomUsageReportProps {
+	data: RoomUsageData[];
+}
+
+export interface ProgramSelectProps {
+	programs: string[];
+	value: string;
+	onChange: (event: SelectChangeEvent<string>) => void;
+}

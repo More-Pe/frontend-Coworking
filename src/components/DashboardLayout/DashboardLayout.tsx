@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Container, Box, Button, ButtonGroup } from '@mui/material';
 import PersonsTable from './PersonsTable'; 
 import RoomsTable from './RoomsTable'; 
-import StartupsTable from './StartupsTable'; 
-import ReportsOptions from './ReportsOptions';
+import StartupsTable from './StartupsTable/StartupsTable'; 
+import ReportsOptions from './ReportsOptions/ReportsOptions';
 import DefaultComponent from './DefaultComponent';
 
 const DashboardLayout = () => {
