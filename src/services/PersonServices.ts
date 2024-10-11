@@ -85,9 +85,13 @@ export const deletePerson = async (id: number, token: string) => {
     }
 };
 
-export const getCurrentAccess = async (id: number) => {
+export const getCurrentAccess = async (id: number, token: string) => {
     try {
-        const response = await axios.get(`${URL}/${id}/current-access`);
+        const response = await axios.get(`${URL}/${id}/current-access`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error retrieving current access');
