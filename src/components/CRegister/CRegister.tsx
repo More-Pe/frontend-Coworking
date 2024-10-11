@@ -253,7 +253,6 @@ const CRegister = () => {
             )}
           />
         </Box>
-
         <Box sx={{ width: '100%', mt: 2, textAlign: 'center' }}>
           <Typography>
             Already have an account? <Link to='/login'>Login here!</Link>

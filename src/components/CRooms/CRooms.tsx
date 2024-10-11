@@ -14,7 +14,6 @@ import RoomImg from '../../assets/hot-desk-img.png';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCurrentPeopleInRoom, registerEntry, registerExit } from '../../services/AccessServices';
 import { getRoomById, getAllRooms } from '../../services/RoomServices';
-import { getCurrentAccess } from '../../services/PersonServices';
 import { Room } from '../../types';
 
 const CRooms = () => {
@@ -38,26 +37,6 @@ const CRooms = () => {
 		};
 		fetchRooms();
 	}, []);
-
-	useEffect(() => {
-		const checkCurrentAccess = async () => {
-			if (isLoggedIn && token && passport) {
-				try {
-					const response = await getCurrentAccess(passport.tokenData.person_id);
-					if (response.data && response.data.room_id) {
-						setIsCheckedIn(true);
-						setCurrentRoomId(response.data.room_id);
-					} else {
-						setIsCheckedIn(false);
-						setCurrentRoomId(null);
-					}
-				} catch (error) {
-					console.error('Error checking current access:', error);
-				}
-			}
-		};
-		checkCurrentAccess();
-	}, [isLoggedIn, token, passport]);
 
 	const handleRoomSelect = async (roomId: number) => {
 		try {

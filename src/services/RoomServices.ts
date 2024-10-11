@@ -59,13 +59,9 @@ export const deleteRoom = async (id: number, token: string) => {
     }
 };
 
-export const getRoomCurrentStatus = async (id: number, token: string) => {
+export const getRoomCurrentStatus = async (id: number) => {
     try {
-        const response = await axios.get(`${URL}/${id}/current-status`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await axios.get(`${URL}/${id}/current-status`);
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error retrieving room status');

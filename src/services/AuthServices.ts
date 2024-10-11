@@ -13,7 +13,6 @@ export const registerUser = async (data: {
 }) => {
   try {
     const response = await axios.post(`${URL}/register`, data);
-    console.log('User registered successfully:', response.data);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -32,7 +31,6 @@ export const loginUser = async (data: {
   }) => {
     try {
       const response = await axios.post(`${URL}/login`, data);
-      console.log('User login successfully:', response.data);
       return response.data;
     } catch (error: any) {
       if (error.response) {

@@ -56,7 +56,6 @@ const CProfile = () => {
 							dni,
 							phone,
 						});
-						console.log(response);
 					} catch (error) {
 						console.error('Error fetching profile:', error);
 					}
