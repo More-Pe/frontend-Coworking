@@ -124,7 +124,7 @@ export interface ProgramSelectProps {
 }
 
 export interface StartupSelectProps {
-	value: number | undefined;
+	value: number | undefined | string;
 	onChange: (event: SelectChangeEvent<number>) => void;
 	disabled?: boolean;
   }
