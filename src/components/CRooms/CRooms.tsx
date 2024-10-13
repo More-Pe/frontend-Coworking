@@ -12,7 +12,11 @@ import {
 import { Link } from 'react-router-dom';
 import RoomImg from '../../assets/hot-desk-img.png';
 import { useAuth } from '../../contexts/AuthContext';
-import { getCurrentPeopleInRoom, registerEntry, registerExit } from '../../services/AccessServices';
+import {
+	getCurrentPeopleInRoom,
+	registerEntry,
+	registerExit,
+} from '../../services/AccessServices';
 import { getRoomById, getAllRooms } from '../../services/RoomServices';
 import { Room } from '../../types';
 
@@ -45,10 +49,10 @@ const CRooms = () => {
 
 			const currentPeopleResponse = await getCurrentPeopleInRoom(roomId);
 			setCurrentAccess(currentPeopleResponse.data.count);
-			
+
 			if (passport && currentPeopleResponse.data.people) {
 				const isUserInRoom = currentPeopleResponse.data.people.some(
-					(person: any) => person.person_id === passport.tokenData.person_id
+					(person: any) => person.person_id === passport.tokenData.person_id,
 				);
 				setIsCheckedIn(isUserInRoom);
 				setCurrentRoomId(isUserInRoom ? roomId : null);
@@ -73,11 +77,13 @@ const CRooms = () => {
 				setCurrentRoomId(selectedRoom.room_id);
 			}
 			// Refresh the current access count and check user status
-			const currentPeopleResponse = await getCurrentPeopleInRoom(selectedRoom.room_id);
+			const currentPeopleResponse = await getCurrentPeopleInRoom(
+				selectedRoom.room_id,
+			);
 			setCurrentAccess(currentPeopleResponse.data.count);
 			if (passport && currentPeopleResponse.data.people) {
 				const isUserInRoom = currentPeopleResponse.data.people.some(
-					(person: any) => person.person_id === passport.tokenData.person_id
+					(person: any) => person.person_id === passport.tokenData.person_id,
 				);
 				setIsCheckedIn(isUserInRoom);
 			}
@@ -90,6 +96,7 @@ const CRooms = () => {
 	return (
 		<Container
 			sx={{
+				minWidth: '85vw',
 				minHeight: '100vh',
 				display: 'flex',
 				alignItems: 'center',
@@ -101,7 +108,7 @@ const CRooms = () => {
 				sx={{
 					flex: 1,
 					display: 'flex',
-					justifyContent: { xs: 'center', md: 'flex-end' },
+					justifyContent: { xs: 'center', md: 'center' },
 				}}>
 				<img
 					src={RoomImg}
@@ -119,10 +126,35 @@ const CRooms = () => {
 					alignItems: 'flex-start',
 					justifyContent: 'center',
 				}}>
+				<Typography variant='h2'>Enjoy flexibility with</Typography>
 				<Typography
-					variant='h2'
+					variant='h1'
 					gutterBottom>
-					Welcome to Open Space
+					<strong>HOT DESK.</strong>
+				</Typography>
+				<Typography
+					variant='h3'
+					gutterBottom>
+					<span>The perfect modality for</span>{' '}
+					<strong>team players!</strong>
+				</Typography>
+				<Typography
+					variant='h5'
+					sx={{ margin: '16px 0' }}>
+					<strong>Real-Time Availability</strong>:{' '}
+					<span>Check room availability in real-time</span>
+					<br />
+					<strong>No Reservations Needed</strong>:{' '}
+					<span> Just check-in and check-out.</span>
+					<br />
+					<strong>Authorized Access Only</strong>:{' '}
+					<span> Make sure you're authorized to enjoy our spaces.</span>
+					<br />
+				</Typography>
+				<Typography
+					variant='h4'
+					gutterBottom>
+					Take a look!
 				</Typography>
 				{error && <Typography color='error'>{error}</Typography>}
 				<FormControl
@@ -174,14 +206,17 @@ const CRooms = () => {
 						variant='outlined'
 						color={isCheckedIn ? 'error' : 'success'}
 						size='large'
-						onClick={handleCheckInOut}
-					>
+						onClick={handleCheckInOut}>
 						{isCheckedIn ? 'Check-out' : 'Check-in'}
 					</Button>
 				)}
 				{isCheckedIn && currentRoomId !== selectedRoom?.room_id && (
-					<Typography variant='body1' color='error' sx={{ mt: 2 }}>
-						You are currently checked in to another room. Please select that room to check out.
+					<Typography
+						variant='body1'
+						color='error'
+						sx={{ mt: 2 }}>
+						You are currently checked in to another room. Please select that
+						room to check out.
 					</Typography>
 				)}
 			</Box>
