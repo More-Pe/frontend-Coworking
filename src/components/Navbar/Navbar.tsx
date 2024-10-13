@@ -110,7 +110,7 @@ function NavBar() {
                 !isLoggedIn && <MenuItem key="login" onClick={handleCloseNavMenu}>{renderNavLink('Login', '/login')}</MenuItem>,
                 !isLoggedIn && <MenuItem key="register" onClick={handleCloseNavMenu}>{renderNavLink('Register', '/register')}</MenuItem>,
                 isLoggedIn && <MenuItem key="profile" onClick={handleCloseNavMenu}>{renderNavLink('Profile', '/profile')}</MenuItem>,
-                isLoggedIn && isAdmin && <MenuItem key="admin" onClick={handleCloseNavMenu}>{renderNavLink('Admin Dashboard', '/admin')}</MenuItem>,
+                isLoggedIn && isAdmin && <MenuItem key="admin" onClick={handleCloseNavMenu}>{renderNavLink('Manage', '/admin')}</MenuItem>,
                 isLoggedIn && <MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
               ]}
             </Menu>
@@ -146,7 +146,7 @@ function NavBar() {
             ) : (
               <>
                 {renderNavLink('Profile', '/profile')}
-                {isAdmin && renderNavLink('Admin Dashboard', '/admin')}
+                {isAdmin && renderNavLink('Manage', '/admin')}
                 <Button onClick={handleLogout} sx={{ fontSize: '1.1rem', padding: '10px 15px', fontWeight: 'bold' }}>Logout</Button>
               </>
             )}
