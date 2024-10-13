@@ -40,16 +40,16 @@ const LandingPage: React.FC = () => {
 				<Typography
 					variant='h5'
 					sx={{ margin: '16px 0' }}>
-					<strong>Exclusive Access</strong>:{' '}
+					✧<strong> Exclusive Access:</strong>{' '}
 					<span>For authorized members only.</span>
 					<br />
-					<strong>Premium Services</strong>:{' '}
+					✧<strong> Premium Services:</strong>{' '}
 					<span>Enjoy our dining area, meeting rooms, and more.</span>
 					<br />
-					<strong>Easy Booking</strong>:{' '}
+					✧<strong> Easy Booking:</strong>{' '}
 					<span>Manage your time and space with our user-friendly app.</span>
 					<br />
-					<strong>Flexible Hours</strong>:{' '}
+					✧<strong> Flexible Hours:</strong>{' '}
 					<span>Monday to Friday from 8:30 AM to 6:15 PM.</span>
 					<br />
 				</Typography>

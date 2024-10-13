@@ -141,13 +141,13 @@ const CRooms = () => {
 				<Typography
 					variant='h5'
 					sx={{ margin: '16px 0' }}>
-					<strong>Real-Time Availability</strong>:{' '}
+					✧ <strong>Real-Time Availability:</strong>{' '}
 					<span>Check room availability in real-time</span>
 					<br />
-					<strong>No Reservations Needed</strong>:{' '}
+					✧ <strong>No Reservations Needed:</strong>{' '}
 					<span> Just check-in and check-out.</span>
 					<br />
-					<strong>Authorized Access Only</strong>:{' '}
+					✧ <strong>Authorized Access Only:</strong>{' '}
 					<span> Make sure you're authorized to enjoy our spaces.</span>
 					<br />
 				</Typography>

@@ -124,11 +124,14 @@ const CProfile = () => {
 				<Typography
 					variant='h1'
 					gutterBottom>
-					<strong>{formData.first_name}.</strong>
+					<strong>{formData.first_name.toUpperCase()}.</strong>
 				</Typography>
-				<Typography variant="h3" gutterBottom>
-            <span>Manage your</span> <strong>info!</strong>
-          </Typography>
+
+				<Typography
+					variant='h3'
+					gutterBottom>
+					<span>Manage your</span> <strong>info!</strong>
+				</Typography>
 				<Box
 					component='form'
 					sx={{

@@ -5,6 +5,7 @@ const NotFound = () => {
 	return (
 		<Container
 			sx={{
+				minWidth: '85vw',
 				minHeight: '100vh',
 				display: 'flex',
 				alignItems: 'center',
@@ -16,7 +17,7 @@ const NotFound = () => {
 				sx={{
 					flex: 1,
 					display: 'flex',
-					justifyContent: { xs: 'center', md: 'flex-end' },
+					justifyContent: { xs: 'center', md: 'center' },
 				}}>
 				<img
 					src={NotFoungImg}
@@ -34,16 +35,17 @@ const NotFound = () => {
 					alignItems: 'flex-start',
 					justifyContent: 'center',
 				}}>
+				<Typography variant='h2'>OOPS! This corner is</Typography>
 				<Typography
-					variant='h2'
+					variant='h1'
 					gutterBottom>
-					Oops! This corner is empty...
+					<strong>EMPTY.</strong>
 				</Typography>
 				<Typography
-					variant='h5'
-					sx={{ margin: '16px 0' }}>
-					The page you're trying to visit doesn't exist. But don't worry,
-					there's still a lot to explore on our website!
+					variant='h4'
+					gutterBottom>
+					<span>The page you're trying to visit doesn't exist. But</span> <strong>don't worry</strong><span>,
+					there's still <strong>a lot to explore</strong> on our website!</span> 
 				</Typography>
 			</Box>
 		</Container>
