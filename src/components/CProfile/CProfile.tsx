@@ -92,25 +92,25 @@ const CProfile = () => {
 				minHeight: '100vh',
 				display: 'flex',
 				alignItems: 'center',
-				justifyContent: 'space-between',
-				padding: 4,
+				justifyContent: 'center',
+				padding: 1,
 				flexDirection: { xs: 'column', md: 'row' },
 			}}>
 			<Box
 				sx={{
 					flex: 1,
 					display: 'flex',
-					justifyContent: { xs: 'center', md: 'flex-end' },
+					justifyContent: { xs: 'center', md: 'center' },
 				}}>
 				<img
 					src={ProfileImg}
-					alt='Placeholder'
-					style={{ width: '100%', maxWidth: '600px', borderRadius: '8px' }}
+					alt='profile page'
+					style={{ height: '45rem' }}
 				/>
 			</Box>
 			<Box
 				sx={{
-					flex: 1,
+					flex: 2,
 					textAlign: 'left',
 					marginBottom: { xs: 4, md: 0 },
 					display: 'flex',
@@ -118,14 +118,17 @@ const CProfile = () => {
 					alignItems: 'flex-start',
 					justifyContent: 'center',
 					width: '100%',
-					maxWidth: '600px',
+					maxWidth: '60vw',
 				}}>
-				<Typography variant="h2" gutterBottom>
-					Hello again, {formData.first_name}!
+				<Typography variant='h2'>This is your profile,</Typography>
+				<Typography
+					variant='h1'
+					gutterBottom>
+					<strong>{formData.first_name}.</strong>
 				</Typography>
-				<Typography variant='h5' sx={{ margin: '16px 0' }}>
-					Log in and dive into your workspace.
-				</Typography>
+				<Typography variant="h3" gutterBottom>
+            <span>Manage your</span> <strong>info!</strong>
+          </Typography>
 				<Box
 					component='form'
 					sx={{
@@ -134,8 +137,14 @@ const CProfile = () => {
 						alignItems: 'center',
 						width: '100%',
 					}}>
-					<Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', width: '100%' }}>
-						<Box sx={{ flex: '1 1 45%', mt: 1, mb: 1}}>
+					<Box
+						sx={{
+							display: 'flex',
+							flexWrap: 'wrap',
+							justifyContent: 'space-between',
+							width: '100%',
+						}}>
+						<Box sx={{ flex: '1 1 48%', mt: 1, mb: 1 }}>
 							<TextField
 								label='First Name'
 								name='first_name'
@@ -146,12 +155,42 @@ const CProfile = () => {
 								fullWidth
 							/>
 						</Box>
-						<Box sx={{ flex: '1 1 45%', mt: 1, mb: 1}}>
+						<Box sx={{ flex: '1 1 48%', mt: 1, mb: 1 }}>
 							<TextField
 								label='Last Name'
 								name='last_name'
 								autoComplete='last_name'
 								value={formData.last_name}
+								onChange={handleChange}
+								disabled={!isEditing}
+								fullWidth
+							/>
+						</Box>
+					</Box>
+					<Box
+						sx={{
+							display: 'flex',
+							flexWrap: 'wrap',
+							justifyContent: 'space-between',
+							width: '100%',
+						}}>
+						<Box sx={{ flex: '1 1 48%', mt: 1, mb: 1 }}>
+							<TextField
+								label='Phone'
+								name='phone'
+								autoComplete='phone'
+								value={formData.phone || 'Input your phone number'}
+								onChange={handleChange}
+								disabled={!isEditing}
+								fullWidth
+							/>
+						</Box>
+						<Box sx={{ flex: '1 1 48%', mt: 1, mb: 1 }}>
+							<TextField
+								label='DNI/NIE'
+								name='dni'
+								autoComplete='dni'
+								value={formData.dni || 'Input your DNI or NIE'}
 								onChange={handleChange}
 								disabled={!isEditing}
 								fullWidth
@@ -164,17 +203,6 @@ const CProfile = () => {
 							name='email'
 							autoComplete='email'
 							value={formData.email}
-							onChange={handleChange}
-							disabled={!isEditing}
-							fullWidth
-						/>
-					</Box>
-					<Box sx={{ width: '100%', mt: 2 }}>
-						<TextField
-							label='Phone'
-							name='phone'
-							autoComplete='phone'
-							value={formData.phone || 'Input yout phone number'}
 							onChange={handleChange}
 							disabled={!isEditing}
 							fullWidth
@@ -209,28 +237,6 @@ const CProfile = () => {
 							onChange={handleChange}
 							disabled={!isEditing}
 							type='password'
-							fullWidth
-						/>
-					</Box>
-          <Box sx={{ width: '100%', mt: 2 }}>
-						<TextField
-							label='Email'
-							name='email'
-							autoComplete='email'
-							value={formData.email}
-							onChange={handleChange}
-							disabled={!isEditing}
-							fullWidth
-						/>
-					</Box>
-					<Box sx={{ width: '100%', mt: 2 }}>
-						<TextField
-							label='DNI/NIE'
-							name='DNI/NIE'
-							autoComplete='dni'
-							value={formData.dni || 'Input yor DNI or NIE'}
-							onChange={handleChange}
-							disabled={!isEditing}
 							fullWidth
 						/>
 					</Box>
