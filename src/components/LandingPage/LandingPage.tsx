@@ -7,6 +7,7 @@ const LandingPage: React.FC = () => {
 	return (
 		<Container
 			sx={{
+				minWidth: '85vw',
 				minHeight: '100vh',
 				display: 'flex',
 				alignItems: 'center',
@@ -24,34 +25,72 @@ const LandingPage: React.FC = () => {
 					alignItems: 'flex-start',
 					justifyContent: 'center',
 				}}>
+				<Typography variant='h2'>Welcome to</Typography>
 				<Typography
-					variant='h2'
+					variant='h1'
 					gutterBottom>
-					Welcome to Our Service
+					<strong>LAS NAVES.</strong>
+				</Typography>
+				<Typography
+					variant='h3'
+					gutterBottom>
+					<span>The perfect coworking space for</span>{' '}
+					<strong>innovative startups!</strong>
 				</Typography>
 				<Typography
 					variant='h5'
 					sx={{ margin: '16px 0' }}>
-					We offer the best solutions to boost your business. Our platform
-					provides an easy-to-use interface and a powerful set of tools to
-					manage your operations effectively.
+					<strong>Exclusive Access</strong>:{' '}
+					<span>For authorized members only.</span>
+					<br />
+					<strong>Premium Services</strong>:{' '}
+					<span>Enjoy our dining area, meeting rooms, and more.</span>
+					<br />
+					<strong>Easy Booking</strong>:{' '}
+					<span>Manage your time and space with our user-friendly app.</span>
+					<br />
+					<strong>Flexible Hours</strong>:{' '}
+					<span>Monday to Friday from 8:30 AM to 6:15 PM.</span>
+					<br />
 				</Typography>
-				<CSurfer
-					content={
-						<Button
-							variant='contained'
-							color='primary'
-							size='large'>
-							Get Started
-						</Button>
-					}
-					path='/register'></CSurfer>
+				<Typography
+					variant='h4'
+					gutterBottom>
+					All for free! Get started!
+				</Typography>
+				<Box
+					sx={{
+						display: 'flex',
+						gap: 2,
+						marginTop: 2,
+					}}>
+					<CSurfer
+						content={
+							<Button
+								variant='outlined'
+								color='primary'
+								size='large'>
+								Register
+							</Button>
+						}
+						path='/register'></CSurfer>
+					<CSurfer
+						content={
+							<Button
+								variant='outlined'
+								color='primary'
+								size='large'>
+								Login
+							</Button>
+						}
+						path='/login'></CSurfer>
+				</Box>
 			</Box>
 			<Box
 				sx={{
 					flex: 1,
 					display: 'flex',
-					justifyContent: { xs: 'center', md: 'flex-end' },
+					justifyContent: { xs: 'center', md: 'center' },
 				}}>
 				<img
 					src={HomeImg}
