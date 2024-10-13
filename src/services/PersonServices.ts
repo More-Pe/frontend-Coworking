@@ -48,7 +48,7 @@ export const createUserByAdmin = async (userData: any) => {
 
 export const updateOwnProfile = async (updateData: any, token: string) => {
     try {
-        const response = await axios.put(`${URL}/profile`, updateData, {
+        const response = await axios.patch(`${URL}/profile`, updateData, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

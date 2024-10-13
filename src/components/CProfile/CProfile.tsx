@@ -10,80 +10,135 @@ import {
 	InputLabel,
 	Select,
 	MenuItem,
+	SelectChangeEvent,
 } from '@mui/material';
 import ProfileImg from '../../assets/profile-img.png';
 import { getOwnProfile, updateOwnProfile } from '../../services/PersonServices';
 import { useAuth } from '../../contexts/AuthContext';
+import { getAllStartups } from '../../services/StartupService';
 
-const CProfile = () => {
+
+interface Startup {
+	startup_id: number;
+	name: string;
+  }
+  
+  interface ProfileData {
+	first_name: string;
+	last_name: string;
+	email: string;
+	phone?: string;
+	dni?: string;
+	startup?: string | Startup;
+  }
+  
+  const CProfile: React.FC = () => {
 	const { token, isLoggedIn } = useAuth();
 	const navigate = useNavigate();
-
+	const [originalData, setOriginalData] = useState<ProfileData | null>(null);
 	const [isEditing, setIsEditing] = useState(false);
-	const [formData, setFormData] = useState({
-		first_name: '',
-		last_name: '',
-		email: '',
-		password: '',
-		startup: '',
-		dni: '',
-		phone: '',
+	const [formData, setFormData] = useState<ProfileData>({
+	  first_name: '',
+	  last_name: '',
+	  email: '',
+	  phone: '',
+	  dni: '',
+	  startup: '',
 	});
-
+  
+	const [startups, setStartups] = useState<Startup[]>([]);
+  
 	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate('/login');
-		} else {
-			const bringProfile = async () => {
-				if (token) {
-					try {
-						const response = await getOwnProfile(token);
-						const {
-							first_name,
-							last_name,
-							email,
-							password,
-							startup,
-							phone,
-							dni,
-						} = response.data;
-						setFormData({
-							first_name,
-							last_name,
-							email,
-							password,
-							startup,
-							dni,
-							phone,
-						});
-					} catch (error) {
-						console.error('Error fetching profile:', error);
-					}
-				}
-			};
-			bringProfile();
-		}
-	}, [isLoggedIn, navigate, token]);
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
-
-	const handleEdit = () => {
-		setIsEditing(true);
-	};
-
-	const handleSave = async () => {
-		try {
-			if (token) {
-				const response = await updateOwnProfile(formData, token);
-				console.log('Profile updated successfully:', response);
-				setIsEditing(false);
+	  if (!isLoggedIn) {
+		navigate('/login');
+	  } else {
+		const fetchData = async () => {
+		  if (token) {
+			try {
+			  const profileResponse = await getOwnProfile(token);
+			  if (profileResponse.success && profileResponse.data) {
+				setFormData(profileResponse.data);
+			  }
+  
+			  const startupsResponse = await getAllStartups();
+			  if (startupsResponse.success && startupsResponse.data) {
+				setStartups(startupsResponse.data);
+			  }
+			} catch (error) {
+			  console.error('Error fetching data:', error);
 			}
-		} catch (error) {
-			console.error('Error updating profile:', error);
+		  }
+		};
+		fetchData();
+	  }
+	}, [isLoggedIn, navigate, token]);
+  
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	  const { name, value } = e.target;
+	  setFormData({ ...formData, [name]: value });
+	};
+  
+	const handleStartupChange = (event: SelectChangeEvent<number>) => {
+	  const startupId = event.target.value as number;
+	  const selectedStartup = startups.find(
+		(startup) => startup.startup_id === startupId,
+	  );
+	  if (selectedStartup) {
+		setFormData({
+		  ...formData,
+		  startup: selectedStartup.name,
+		});
+	  }
+	};
+  
+	const handleEdit = () => {
+	  setIsEditing(true);
+	  setOriginalData(formData);
+	};
+  
+	const handleSave = async () => {
+	  try {
+		if (token) {
+		  const response = await updateOwnProfile(formData, token);
+		  if (response.success) {
+			console.log('Profile updated successfully:', response);
+			setIsEditing(false);
+			setOriginalData(null);
+			setFormData(response.data);
+		  } else {
+			console.error('Error updating profile:', response.message);
+		  }
 		}
+	  } catch (error) {
+		console.error('Error updating profile:', error);
+	  }
+	};
+  
+	const handleCancel = () => {
+	  if (originalData) {
+		setFormData(originalData);
+	  }
+	  setIsEditing(false);
+	  setOriginalData(null);
+	};
+  
+	const getStartupId = (): number => {
+	  if (typeof formData.startup === 'string') {
+		const foundStartup = startups.find(s => s.name === formData.startup);
+		return foundStartup ? foundStartup.startup_id : 0;
+	  } else if (formData.startup && 'startup_id' in formData.startup) {
+		return formData.startup.startup_id;
+	  }
+	  return 0;
+	};
+  
+	const getStartupName = (): string => {
+	  if (typeof formData.startup === 'string') {
+		return formData.startup;
+	  } else if (formData.startup && 'name' in formData.startup) {
+		return formData.startup.name;
+	  }
+	  return 'No startup selected';
 	};
 
 	return (
@@ -212,43 +267,62 @@ const CProfile = () => {
 						/>
 					</Box>
 					<Box sx={{ width: '100%', mt: 2 }}>
-						<FormControl fullWidth>
-							<InputLabel id='startup-label'>
-								{formData.startup || 'Select a startup'}
-							</InputLabel>
-							<Select
-								labelId='startup-label'
-								label='Startup'
-								autoComplete='startup'
-								name='startup'
-								value={formData.startup || ''}
-								onChange={(e) =>
-									handleChange(e as React.ChangeEvent<HTMLInputElement>)
-								}
-								disabled={!isEditing}>
-								<MenuItem value='Startup 1'>Startup 1</MenuItem>
-								<MenuItem value='Startup 2'>Startup 2</MenuItem>
-							</Select>
-						</FormControl>
+        <FormControl fullWidth>
+          <InputLabel id='startup-label'>Startup</InputLabel>
+          <Select
+            labelId='startup-label'
+            label='Startup'
+            name='startup'
+            value={getStartupId()}
+            onChange={handleStartupChange}
+            disabled={!isEditing}
+          >
+            {isEditing ? (
+              startups.map((startup) => (
+                <MenuItem
+                  key={startup.startup_id}
+                  value={startup.startup_id}
+                >
+                  {startup.name}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem value={getStartupId()}>
+                {getStartupName()}
+              </MenuItem>
+            )}
+          </Select>
+        </FormControl>
+      </Box>
+					<Box
+						sx={{
+							display: 'flex',
+							justifyContent: 'center',
+							width: '100%',
+							mt: 2,
+						}}>
+						{isEditing ? (
+							<>
+								<Button
+									variant='contained'
+									onClick={handleSave}
+									sx={{ mr: 1 }}>
+									Save
+								</Button>
+								<Button
+									variant='outlined'
+									onClick={handleCancel}>
+									Cancel
+								</Button>
+							</>
+						) : (
+							<Button
+								variant='contained'
+								onClick={handleEdit}>
+								Edit
+							</Button>
+						)}
 					</Box>
-					<Box sx={{ width: '100%', mt: 2 }}>
-						<TextField
-							label={formData.password ? 'Password' : 'Password'}
-							name='password'
-							autoComplete='password'
-							value={formData.password}
-							onChange={handleChange}
-							disabled={!isEditing}
-							type='password'
-							fullWidth
-						/>
-					</Box>
-					<Button
-						variant='contained'
-						onClick={isEditing ? handleSave : handleEdit}
-						sx={{ mt: 2 }}>
-						{isEditing ? 'Save' : 'Edit'}
-					</Button>
 				</Box>
 			</Box>
 		</Container>
