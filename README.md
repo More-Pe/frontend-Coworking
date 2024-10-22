@@ -1,8 +1,10 @@
-# 🏢 Coworking Frontend
+# 🏢 Las Naves - Coworking Managment System
+
+Coworking is a management application for shared workspaces that allows users to book rooms, manage access, and visualize information about space usage.
+
 <p align="center">
   <img alt="coworking banner" src="./src/assets/home-screen.gif">
 </p>
-Coworking is a management application for shared workspaces that allows users to book rooms, manage access, and visualize information about space usage.
 
 ## 🛠️ Features
 The application offers the following features:
