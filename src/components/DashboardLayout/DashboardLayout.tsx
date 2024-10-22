@@ -33,7 +33,7 @@ const DashboardLayout = () => {
 		<Container
 			sx={{
 				minWidth: '85vw',
-        minHeight: '100vh',
+				minHeight: '100vh',
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',

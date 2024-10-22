@@ -12,133 +12,132 @@ import {
 	MenuItem,
 	SelectChangeEvent,
 } from '@mui/material';
-import ProfileImg from '../../assets/profile-img.png';
+import ProfileImg from '../../assets/woman-pc-left.png';
 import { getOwnProfile, updateOwnProfile } from '../../services/PersonServices';
 import { useAuth } from '../../contexts/AuthContext';
 import { getAllStartups } from '../../services/StartupService';
 
-
 interface Startup {
 	startup_id: number;
 	name: string;
-  }
-  
-  interface ProfileData {
+}
+
+interface ProfileData {
 	first_name: string;
 	last_name: string;
 	email: string;
 	phone?: string;
 	dni?: string;
 	startup?: string | Startup;
-  }
-  
-  const CProfile: React.FC = () => {
+}
+
+const CProfile: React.FC = () => {
 	const { token, isLoggedIn } = useAuth();
 	const navigate = useNavigate();
 	const [originalData, setOriginalData] = useState<ProfileData | null>(null);
 	const [isEditing, setIsEditing] = useState(false);
 	const [formData, setFormData] = useState<ProfileData>({
-	  first_name: '',
-	  last_name: '',
-	  email: '',
-	  phone: '',
-	  dni: '',
-	  startup: '',
+		first_name: '',
+		last_name: '',
+		email: '',
+		phone: '',
+		dni: '',
+		startup: '',
 	});
-  
+
 	const [startups, setStartups] = useState<Startup[]>([]);
-  
+
 	useEffect(() => {
-	  if (!isLoggedIn) {
-		navigate('/login');
-	  } else {
-		const fetchData = async () => {
-		  if (token) {
-			try {
-			  const profileResponse = await getOwnProfile(token);
-			  if (profileResponse.success && profileResponse.data) {
-				setFormData(profileResponse.data);
-			  }
-  
-			  const startupsResponse = await getAllStartups();
-			  if (startupsResponse.success && startupsResponse.data) {
-				setStartups(startupsResponse.data);
-			  }
-			} catch (error) {
-			  console.error('Error fetching data:', error);
-			}
-		  }
-		};
-		fetchData();
-	  }
-	}, [isLoggedIn, navigate, token]);
-  
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	  const { name, value } = e.target;
-	  setFormData({ ...formData, [name]: value });
-	};
-  
-	const handleStartupChange = (event: SelectChangeEvent<number>) => {
-	  const startupId = event.target.value as number;
-	  const selectedStartup = startups.find(
-		(startup) => startup.startup_id === startupId,
-	  );
-	  if (selectedStartup) {
-		setFormData({
-		  ...formData,
-		  startup: selectedStartup.name,
-		});
-	  }
-	};
-  
-	const handleEdit = () => {
-	  setIsEditing(true);
-	  setOriginalData(formData);
-	};
-  
-	const handleSave = async () => {
-	  try {
-		if (token) {
-		  const response = await updateOwnProfile(formData, token);
-		  if (response.success) {
-			console.log('Profile updated successfully:', response);
-			setIsEditing(false);
-			setOriginalData(null);
-			setFormData(response.data);
-		  } else {
-			console.error('Error updating profile:', response.message);
-		  }
+		if (!isLoggedIn) {
+			navigate('/login');
+		} else {
+			const fetchData = async () => {
+				if (token) {
+					try {
+						const profileResponse = await getOwnProfile(token);
+						if (profileResponse.success && profileResponse.data) {
+							setFormData(profileResponse.data);
+						}
+
+						const startupsResponse = await getAllStartups();
+						if (startupsResponse.success && startupsResponse.data) {
+							setStartups(startupsResponse.data);
+						}
+					} catch (error) {
+						console.error('Error fetching data:', error);
+					}
+				}
+			};
+			fetchData();
 		}
-	  } catch (error) {
-		console.error('Error updating profile:', error);
-	  }
+	}, [isLoggedIn, navigate, token]);
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
 	};
-  
+
+	const handleStartupChange = (event: SelectChangeEvent<number>) => {
+		const startupId = event.target.value as number;
+		const selectedStartup = startups.find(
+			(startup) => startup.startup_id === startupId,
+		);
+		if (selectedStartup) {
+			setFormData({
+				...formData,
+				startup: selectedStartup.name,
+			});
+		}
+	};
+
+	const handleEdit = () => {
+		setIsEditing(true);
+		setOriginalData(formData);
+	};
+
+	const handleSave = async () => {
+		try {
+			if (token) {
+				const response = await updateOwnProfile(formData, token);
+				if (response.success) {
+					console.log('Profile updated successfully:');
+					setIsEditing(false);
+					setOriginalData(null);
+					setFormData(response.data);
+				} else {
+					console.error('Error updating profile:', response.message);
+				}
+			}
+		} catch (error) {
+			console.error('Error updating profile:', error);
+		}
+	};
+
 	const handleCancel = () => {
-	  if (originalData) {
-		setFormData(originalData);
-	  }
-	  setIsEditing(false);
-	  setOriginalData(null);
+		if (originalData) {
+			setFormData(originalData);
+		}
+		setIsEditing(false);
+		setOriginalData(null);
 	};
-  
+
 	const getStartupId = (): number => {
-	  if (typeof formData.startup === 'string') {
-		const foundStartup = startups.find(s => s.name === formData.startup);
-		return foundStartup ? foundStartup.startup_id : 0;
-	  } else if (formData.startup && 'startup_id' in formData.startup) {
-		return formData.startup.startup_id;
-	  }
-	  return 0;
+		if (typeof formData.startup === 'string') {
+			const foundStartup = startups.find((s) => s.name === formData.startup);
+			return foundStartup ? foundStartup.startup_id : 0;
+		} else if (formData.startup && 'startup_id' in formData.startup) {
+			return formData.startup.startup_id;
+		}
+		return 0;
 	};
-  
+
 	const getStartupName = (): string => {
-	  if (typeof formData.startup === 'string') {
-		return formData.startup;
-	  } else if (formData.startup && 'name' in formData.startup) {
-		return formData.startup.name;
-	  }
-	  return 'No startup selected';
+		if (typeof formData.startup === 'string') {
+			return formData.startup;
+		} else if (formData.startup && 'name' in formData.startup) {
+			return formData.startup.name;
+		}
+		return 'No startup selected';
 	};
 
 	return (
@@ -151,18 +150,6 @@ interface Startup {
 				padding: 1,
 				flexDirection: { xs: 'column', md: 'row' },
 			}}>
-			<Box
-				sx={{
-					flex: 1,
-					display: 'flex',
-					justifyContent: { xs: 'center', md: 'center' },
-				}}>
-				<img
-					src={ProfileImg}
-					alt='profile page'
-					style={{ height: '45rem' }}
-				/>
-			</Box>
 			<Box
 				sx={{
 					flex: 2,
@@ -267,33 +254,29 @@ interface Startup {
 						/>
 					</Box>
 					<Box sx={{ width: '100%', mt: 2 }}>
-        <FormControl fullWidth>
-          <InputLabel id='startup-label'>Startup</InputLabel>
-          <Select
-            labelId='startup-label'
-            label='Startup'
-            name='startup'
-            value={getStartupId()}
-            onChange={handleStartupChange}
-            disabled={!isEditing}
-          >
-            {isEditing ? (
-              startups.map((startup) => (
-                <MenuItem
-                  key={startup.startup_id}
-                  value={startup.startup_id}
-                >
-                  {startup.name}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value={getStartupId()}>
-                {getStartupName()}
-              </MenuItem>
-            )}
-          </Select>
-        </FormControl>
-      </Box>
+						<FormControl fullWidth>
+							<InputLabel id='startup-label'>Startup</InputLabel>
+							<Select
+								labelId='startup-label'
+								label='Startup'
+								name='startup'
+								value={getStartupId()}
+								onChange={handleStartupChange}
+								disabled={!isEditing}>
+								{isEditing ? (
+									startups.map((startup) => (
+										<MenuItem
+											key={startup.startup_id}
+											value={startup.startup_id}>
+											{startup.name}
+										</MenuItem>
+									))
+								) : (
+									<MenuItem value={getStartupId()}>{getStartupName()}</MenuItem>
+								)}
+							</Select>
+						</FormControl>
+					</Box>
 					<Box
 						sx={{
 							display: 'flex',
@@ -324,6 +307,18 @@ interface Startup {
 						)}
 					</Box>
 				</Box>
+			</Box>
+			<Box
+				sx={{
+					flex: 1,
+					display: 'flex',
+					justifyContent: { xs: 'center', md: 'center' },
+				}}>
+				<img
+					src={ProfileImg}
+					alt='profile page'
+					style={{ height: '26rem' }}
+				/>
 			</Box>
 		</Container>
 	);
